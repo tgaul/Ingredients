@@ -16,7 +16,7 @@
 - (void)setFrame:(NSRect)newFrame
 {
 	[super setFrame:newFrame];
-	
+
 	if ([resizeDelegate respondsToSelector:@selector(viewResized:)])
 		[resizeDelegate viewResized:self];
 }

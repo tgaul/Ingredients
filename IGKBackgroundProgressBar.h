@@ -11,10 +11,10 @@
 
 @interface IGKBackgroundProgressBar : NSView {
 	BOOL shouldStop;
-	
+
 	//The number of pixels to translate right
 	CGFloat phase;
-	
+
 	//The time interval from the reference date when the progress bar was last phased. Used to update phase
 	NSTimeInterval lastUpdate;
 }

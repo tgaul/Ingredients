@@ -15,7 +15,7 @@
 @interface IGKApplicationDelegate : NSObject
 {
 	NSMutableArray *windowControllers;
-	
+
 	IGKLaunchController *launchController;
 	IGKWindowController *fullscreenWindowController;
 	NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -23,19 +23,19 @@
 	NSManagedObjectContext *managedObjectContext;
 	NSManagedObjectContext *backgroundManagedObjectContext;
 	WebHistory *history;
-	
+
 	id preferencesController;
-	
+
 	dispatch_queue_t backgroundQueue;
-	
+
 	NSUInteger docsetCount;
-	
+
 	//The NSXMLDocument cache caches parsed NSXMLDocument trees and references them by their location on disk
 	NSCache *xmlDocumentCache;
-	
+
 	//The HTML cache caches various pieces of parsed html to save the computer from parsing the same thing twice
 	NSCache *htmlCache;
-	
+
 	BOOL applicationIsIndexing;
 }
 

@@ -6,7 +6,7 @@
 {
 	[NSApp activateIgnoringOtherApps:YES];
 	NSRunAlertPanel(@"IT WORKS", nil, nil, nil, nil);
-	
+
 	return nil;
 }
 
@@ -18,7 +18,7 @@
 {
 	[NSApp activateIgnoringOtherApps:YES];
 	NSRunAlertPanel(@"IT WORKS 2", nil, nil, nil, nil);
-	
+
 	return nil;
 }
 

@@ -26,21 +26,21 @@
 - (NSString *)addHyperlinksToPassage:(NSString *)passage
 {
 	NSUInteger length = [passage length];
-	
+
 	NSMutableString *newString = [[NSMutableString alloc] initWithCapacity:length];
 	__block NSRange previousRange = NSMakeRange(0, 0);
-	
+
 	[passage enumerateSubstringsInRange:NSMakeRange(0, length)
 								options:NSStringEnumerationByWords
 							 usingBlock:
 	^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
-		
+
 		NSInteger inbetweenLength = substringRange.location - NSMaxRange(previousRange);
 		if (inbetweenLength > 0)
 		{
 			[newString appendString:[passage substringWithRange:NSMakeRange(NSMaxRange(previousRange), inbetweenLength)]];
 		}
-		
+
 		if ([substring length] > 1 && [words containsObject:substring])
 		{
 			[newString appendString:@"<a href='http://ingr-link/"];
@@ -53,16 +53,16 @@
 		{
 			[newString appendString:substring];
 		}
-		
+
 		previousRange = substringRange;
 	}];
-	
+
 	NSInteger inbetweenLength = length - NSMaxRange(previousRange);
 	if (inbetweenLength > 0)
 	{
 		[newString appendString:[passage substringWithRange:NSMakeRange(NSMaxRange(previousRange), inbetweenLength)]];
 	}
-	
+
 	return newString;
 }
 

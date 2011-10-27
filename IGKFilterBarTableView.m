@@ -19,7 +19,7 @@
 		r.origin.y += 2.0;
 		return r;
 	}
-	
+
 	return [super frameOfCellAtColumn:column row:row];
 }
 

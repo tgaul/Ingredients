@@ -12,10 +12,10 @@
 
 @implementation IGKWindow
 
-- (id)initWithContentRect:(NSRect)contentRect 
-                styleMask:(NSUInteger)styleMask 
-                  backing:(NSBackingStoreType)bufferingType 
-                    defer:(BOOL)flag 
+- (id)initWithContentRect:(NSRect)contentRect
+                styleMask:(NSUInteger)styleMask
+                  backing:(NSBackingStoreType)bufferingType
+                    defer:(BOOL)flag
 {
     if (self = [super initWithContentRect:contentRect styleMask:styleMask backing:bufferingType defer:flag])
 	{
@@ -27,7 +27,7 @@
 		[[[self contentView] superview] addSubview:multiSelector];
 #endif
 	}
-	
+
 	return self;
 }
 
@@ -35,7 +35,7 @@
 - (id)handleSearchScriptCommand:(NSScriptCommand*)scriptCommand
 {
 	NSString* searchString = nil;
-	
+
 	searchString = [[scriptCommand arguments] objectForKey:@"searchString"];
 	NSAssert(searchString != nil, @"No search string found for search script command");
 	[(IGKWindowController*)[self windowController] executeSearchWithString:searchString];

@@ -11,7 +11,7 @@
 
 @interface IGKMatteButton : NSButton {
 	int mouseState;
-	
+
 	int oldSelectedCell;
 	int selectedCell;
 }

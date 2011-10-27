@@ -12,22 +12,22 @@
 @interface IGKPreferencesController : NSWindowController<NSTableViewDataSource, NSTableViewDelegate>
 {
 	NSView *currentView;
-	
+
 	IBOutlet NSView *generalView;
 	IBOutlet NSToolbarItem *generalToolbarItem;
-	
+
 	IBOutlet NSView *docsetsView;
 	IBOutlet NSToolbarItem *docsetsToolbarItem;
 	IBOutlet NSTableView *developerDirectoriesTableView;
 	IBOutlet NSTableView *docsetsTableView;
 	IBOutlet NSView *docsetsChangedStatusView;
-	
+
 	IBOutlet NSView *updatesView;
 	IBOutlet NSToolbarItem *updatesToolbarItem;
-	
+
 	NSMutableArray *developerDirectories;
 	NSMutableArray *docsets;
-	
+
 	BOOL startIntoDocsets;
 }
 

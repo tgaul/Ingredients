@@ -19,7 +19,7 @@
 		[self setOpaque:NO];
 		[self setHasShadow:NO];
 	}
-	
+
 	return self;
 }
 
@@ -41,17 +41,17 @@
 {
 	if ([super respondsToSelector:aSelector])
 		return [super methodSignatureForSelector:aSelector];
-	
+
 	id forwardee = [self actionForwardee];
 	if ([forwardee respondsToSelector:aSelector])
 		return [forwardee methodSignatureForSelector:aSelector];
-	
+
 	return [super methodSignatureForSelector:aSelector];
 }
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
 	id forwardee = [self actionForwardee];
-	
+
 	if ([forwardee respondsToSelector:[anInvocation selector]])
 	{
 		[anInvocation invokeWithTarget:forwardee];
@@ -65,7 +65,7 @@
 - (void)becomeKeyWindow
 {
 	[super becomeKeyWindow];
-	
+
 	//If this window becomes key, we should make the parent window main
 	if ([[self parentWindow] canBecomeMainWindow])
 		[[self parentWindow] makeMainWindow];
@@ -73,7 +73,7 @@
 - (void)becomeMainWindow
 {
 	[super becomeMainWindow];
-	
+
 	//Ditto here. For some reason Apple sends -becomeKeyWindow first then -becomeMainWindow
 	if ([[self parentWindow] canBecomeMainWindow])
 		[[self parentWindow] makeMainWindow];

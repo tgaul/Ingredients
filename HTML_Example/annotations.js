@@ -36,7 +36,7 @@ function add_annotation(n)
     {
         //Hide addBox
         addBox.style.display = 'none';
-        
+
         set_add_button_title(n, 'Add');
     }
     else
@@ -44,7 +44,7 @@ function add_annotation(n)
         //Show addBox
         box.style.display = 'block';
         addBox.style.display = 'block';
-        
+
         set_add_button_title(n, 'Cancel');
         set_show_button_title(n, 'Hide');
     }

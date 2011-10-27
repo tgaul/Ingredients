@@ -7,6 +7,6 @@
 		// Define outlet descriptions here, for example
 		// myOutlet = NSView;
 	};
-    ClassName = BWTransparentSlider; 
-    SuperClass = NSSlider; 
+    ClassName = BWTransparentSlider;
+    SuperClass = NSSlider;
 }

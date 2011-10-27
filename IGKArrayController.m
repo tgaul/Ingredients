@@ -32,70 +32,70 @@ const NSTimeInterval timeoutInterval = 0.15;
 {
 	if (!predicate)
 		return;
-	
+
 	if (!currentSortDescriptors)
 		currentSortDescriptors = smartSortDescriptors;
-	
+
 	NSManagedObjectContext *ctx = [[[NSApp delegate] kitController] managedObjectContext];
 	dispatch_queue_t queue = [[[NSApp delegate] kitController] backgroundQueue];
-	
+
 	if (!queue)
 		return;
-	
+
 	//Copy objects that may change while we're doing this
 	NSPredicate *copiedPredicate = [predicate copy];
 	NSArray *copiedCurrentSortDescriptors = [currentSortDescriptors copy];
 	NSManagedObjectID *vipObjectID = [vipObject objectID];
-	
+
 	isSearching = YES;
 	startedSearchTimeInterval = [NSDate timeIntervalSinceReferenceDate];
 	[self performSelector:@selector(doTimeout) withObject:nil afterDelay:timeoutInterval];
-	
+
 	dispatch_async(queue, ^{
-		
+
 		NSFetchRequest *request = [[NSFetchRequest alloc] init];
 		[request setEntity:[NSEntityDescription entityForName:entityToFetch inManagedObjectContext:ctx]];
 		[request setPredicate:copiedPredicate];
-				
+
 		[request setFetchLimit:500];
 		if (maxRows != 0 && maxRows < 500)
 		{
 			//Limit the list to 100 items. This could be changed to more, if requested, but my view is that if anybody needs more than 100, our sorting isn't smart enough
 			[request setFetchLimit:maxRows];
 		}
-		
+
 		//Sort results by priority, so that when we LIMIT our list, only the low priority items are cut
 		[request setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:NO]]];
-		
+
 		//Fetch a list of objects
 		NSArray *objects = [ctx executeFetchRequest:request error:nil];
-		
+
 		//NSFetchRequests and NSComparator-based sort descriptors apparently don't go together, so we can't tell the fetch request to sort using this descriptor
 		//Besides, it's far better to be sorting 100 objects with our expensive comparator than 10000
 		objects = [objects smartSort:[delegate sideSearchQuery]];
 		//objects = [objects sortedArrayUsingDescriptors:copiedCurrentSortDescriptors];
-		
+
 		BOOL containsVIP = NO;
-		
+
 		//Put the object IDs into an array
 		NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:[objects count]];
 		for (NSManagedObject *obj in objects)
 		{
 			id objid = [obj objectID];
 			[objectIDs addObject:objid];
-			
+
 			if (!containsVIP && [vipObjectID isEqual:objid])
 				containsVIP = YES;
 		}
-		
+
 		//Run the completion block on the main thread
 		dispatch_async(dispatch_get_main_queue(), ^{
-			
+
 			isSearching = NO;
-			
+
 			if ([delegate respondsToSelector:@selector(arrayControllerFinishedSearching:)])
 				[delegate arrayControllerFinishedSearching:self];
-			
+
 			completionBlock(objectIDs, containsVIP);
 		});
 	});
@@ -111,7 +111,7 @@ const NSTimeInterval timeoutInterval = 0.15;
 		return;
 	if (startedSearchTimeInterval + timeoutInterval >= [NSDate timeIntervalSinceReferenceDate])
 		return;
-	
+
 	if ([delegate respondsToSelector:@selector(arrayControllerTimedOut:)])
 		[delegate arrayControllerTimedOut:self];
 }
@@ -121,24 +121,24 @@ const NSTimeInterval timeoutInterval = 0.15;
 - (void)fetchFromRefresh:(NSManagedObjectContext *)ctx managedObjectIDs:(NSArray *)managedObjectIDs fetchContainsVip:(BOOL)fetchContainsVip
 {
 	fetchContainsVipObject = fetchContainsVip;
-	
+
 	fetchedObjects = [[NSMutableArray alloc] initWithCapacity:[managedObjectIDs count]];
 	for (NSManagedObjectID *objID in managedObjectIDs)
 	{
 		[fetchedObjects addObject:[ctx objectWithID:objID]];
 	}
-	
+
 	[tableView reloadData];
 }
 
 - (void)refreshAndSelectObject:(IGKDocRecordManagedObject *)obj renderSelection:(BOOL)renderSelection
 {
 	NSManagedObjectContext *ctx = [[[NSApp delegate] kitController] managedObjectContext];
-	
+
 	//Fetch a new list of objects and refresh the table
 	[self fetch:^ (NSArray *managedObjectIDs, BOOL fetchContainsVip) {
 		[self fetchFromRefresh:ctx managedObjectIDs:managedObjectIDs fetchContainsVip:fetchContainsVip];
-		
+
 		if (obj)
 		{
 			NSUInteger ind = [fetchedObjects indexOfObject:obj];
@@ -147,7 +147,7 @@ const NSTimeInterval timeoutInterval = 0.15;
 				//Select the first row, scroll to it, and notify the delegate
 				[tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:ind] byExtendingSelection:NO];;
 				[tableView scrollRowToVisible:ind];
-				
+
 				if (renderSelection)
 					[[tableView delegate] tableViewSelectionDidChange:[NSNotification notificationWithName:NSTableViewSelectionDidChangeNotification object:tableView]];
 			}
@@ -157,17 +157,17 @@ const NSTimeInterval timeoutInterval = 0.15;
 - (void)refreshAndSelectIndex:(NSInteger)idx renderSelection:(BOOL)renderSelection
 {
 	NSManagedObjectContext *ctx = [[[NSApp delegate] kitController] managedObjectContext];
-	
+
 	//Fetch a new list of objects and refresh the table
 	[self fetch:^(NSArray *managedObjectIDs, BOOL fetchContainsVip) {
 		[self fetchFromRefresh:ctx managedObjectIDs:managedObjectIDs fetchContainsVip:fetchContainsVip];
-		
+
 		if (idx != -1)
 		{
 			//Select the first row, scroll to it, and notify the delegate
 			[tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:idx] byExtendingSelection:NO];;
 			[tableView scrollRowToVisible:idx];
-			
+
 			if (renderSelection)
 				[[tableView delegate] tableViewSelectionDidChange:[NSNotification notificationWithName:NSTableViewSelectionDidChangeNotification object:tableView]];
 		}
@@ -180,15 +180,15 @@ const NSTimeInterval timeoutInterval = 0.15;
 	return !(row < 0 || row >= [fetchedObjects count]);
 }
 - (IBAction)selectPrevious:(id)sender
-{	
+{
 	if (![self canSelectPrevious])
 		return;
-	
+
 	NSInteger row = [tableView selectedRow] - 1;
-	
+
 	[tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	[tableView scrollRowToVisible:row];
-	
+
 	[[tableView delegate] tableViewSelectionDidChange:nil];
 }
 
@@ -201,12 +201,12 @@ const NSTimeInterval timeoutInterval = 0.15;
 {
 	if (![self canSelectNext])
 		return;
-	
+
 	NSInteger row = [tableView selectedRow] + 1;
-	
+
 	[tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	[tableView scrollRowToVisible:row];
-	
+
 	[[tableView delegate] tableViewSelectionDidChange:nil];
 }
 
@@ -214,12 +214,12 @@ const NSTimeInterval timeoutInterval = 0.15;
 {
 	if (row < 0 || row >= [self numberOfRowsInTableView:tableView])
 		return nil;
-	
+
 	if (vipObject && !fetchContainsVipObject)
 	{
 		if (row == 0)
 			return vipObject;
-		
+
 		return [fetchedObjects objectAtIndex:row - 1];
 	}
 	else
@@ -229,15 +229,15 @@ const NSTimeInterval timeoutInterval = 0.15;
 - (id)selection
 {
 	NSInteger row = [tableView selectedRow];
-	
+
 	if (row < 0 || row >= [self numberOfRowsInTableView:tableView])
 		return nil;
-	
+
 	if (vipObject && !fetchContainsVipObject)
 	{
 		if (row == 0)
 			return vipObject;
-		
+
 		return [fetchedObjects objectAtIndex:row - 1];
 	}
 	else
@@ -245,10 +245,10 @@ const NSTimeInterval timeoutInterval = 0.15;
 }
 
 - (void)tableView:(NSTableView *)tv sortDescriptorsDidChange:(NSArray *)oldDescriptors
-{	
+{
 	currentSortDescriptors = [tableView sortDescriptors];
 	NSArray *generatedSortDescriptors = [currentSortDescriptors copy];
-	
+
 	if (![currentSortDescriptors count])
 	{
 		currentSortDescriptors = smartSortDescriptors;
@@ -257,21 +257,21 @@ const NSTimeInterval timeoutInterval = 0.15;
 	{
 		id firstObject = [currentSortDescriptors objectAtIndex:0];
 		id newSortDescriptor = firstObject;
-		
+
 		if ([[firstObject key] isEqual:@"xentity"])
 		{
 			newSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:nil ascending:[firstObject ascending] comparator:^ NSComparisonResult (id obja, id objb) {
-				
+
 				//So neither a nor b starts with q. Now we apply prioritization. Some types get priority over others. For instance, a class > method > typedef > constant
 				NSUInteger objaPriority = [[obja valueForKey:@"priority"] shortValue];
 				NSUInteger objbPriority = [[objb valueForKey:@"priority"] shortValue];
-				
+
 				//Higher priorities are better
 				if (objaPriority > objbPriority)
 					return NSOrderedAscending;
 				else if (objaPriority < objbPriority)
 					return NSOrderedDescending;
-				
+
 				//If the have the same priority, just compare the names of their entities (this is arbitrary, we just want to make sure there isn't an enum between two structs)
 				return [[[obja entity] name] localizedCompare:[[objb entity] name]];
 			}];
@@ -282,46 +282,46 @@ const NSTimeInterval timeoutInterval = 0.15;
 			newSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:nil ascending:YES comparator:^ NSComparisonResult (id obja, id objb) {
 				id a = [obja xcontainername];
 				id b = [objb xcontainername];
-				
+
 				BOOL hasA = ([a length] != 0);
 				BOOL hasB = ([b length] != 0);
-				
+
 				if (hasA == hasB)
 				{
 					NSComparisonResult r = [a localizedCompare:b];
 					if (isAsc)
 						return r;
-					
+
 					//If this is a descending sort, then invert the result of the comparison
-					//We do this instead of using the ascending: option because items with an empty container name should always appear at the bottom, regardless of sort direction 
+					//We do this instead of using the ascending: option because items with an empty container name should always appear at the bottom, regardless of sort direction
 					if (r == NSOrderedAscending)
 						return NSOrderedDescending;
-					
+
 					if (r == NSOrderedDescending)
 						return NSOrderedAscending;
-					
+
 					return NSOrderedSame;
 				}
 				else if (hasA && !hasB)
 				{
 					return NSOrderedAscending;
 				}
-				
+
 				return NSOrderedDescending;
 			}];
 		}
-		
+
 		currentSortDescriptors = [NSArray arrayWithObject:newSortDescriptor];
 	}
-	
+
 	[self refresh];
-	
-	
+
+
 	NSSortDescriptor *desc = [generatedSortDescriptors count] ? [generatedSortDescriptors objectAtIndex:0] : nil;
 	for (NSTableColumn *column in [tableView tableColumns])
 	{
 		NSImage *image = nil;
-		
+
 		if ([[desc key] isEqual:[column identifier]])
 		{
 			if ([desc ascending])
@@ -329,7 +329,7 @@ const NSTimeInterval timeoutInterval = 0.15;
 			else
 				image = [NSImage imageNamed:@"NSDescendingSortIndicator"];
 		}
-		
+
 		[tableView setIndicatorImage:image inTableColumn:column];
 	}
 }
@@ -342,7 +342,7 @@ const NSTimeInterval timeoutInterval = 0.15;
 {
 	if (row < 0 || row >= [fetchedObjects count])
 		return nil;
-	
+
 	//Get the object at this row
 	id fo /* sure */ = nil;
 	if (vipObject && !fetchContainsVipObject)
@@ -356,9 +356,9 @@ const NSTimeInterval timeoutInterval = 0.15;
 	{
 		fo = [fetchedObjects objectAtIndex:row];
 	}
-	
+
 	id identifier = [tableColumn identifier];
-	
+
 	//*** Icons ***
 	if ([identifier isEqual:@"normalIcon"])
 	{
@@ -367,31 +367,31 @@ const NSTimeInterval timeoutInterval = 0.15;
 		else
 			return [fo valueForKey:@"normalIcon"];
 	}
-	
+
 	//*** Titles ***
 	if ([identifier isEqual:@"name"])
 	{
 		NSString *foName = [fo valueForKey:@"name"];
-		
+
 		if ([fo hasKey:@"container"])
 			return [NSString stringWithFormat:@"%@\t(%@)", foName, /* 0x2013, */ [fo valueForKeyPath:@"container.name"]];
-		
+
 		return foName;
 	}
-	
+
 	//*** Container Names ***
 	if ([identifier isEqual:@"xcontainername"])
 	{
 		return [fo valueForKey:@"xcontainername"];
 	}
-	
+
 	//*** Docset Names ***
 	if ([identifier isEqual:@"xdocset"])
 	{
 		return [fo valueForKey:@"xdocset"];
 	}
-	
-	
+
+
 	return nil;
 }
 

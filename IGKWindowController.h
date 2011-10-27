@@ -19,13 +19,13 @@
 @class IGKPredicateEditor;
 
 typedef enum {
-	
+
 	CHDocumentationBrowserUIMode_BrowserOnly = 0,
 	CHDocumentationBrowserUIMode_TwoUp = 1,
 	CHDocumentationBrowserUIMode_AdvancedSearch = 2,
-	
+
 	CHDocumentationBrowserUIMode_NeedsSetup = 20
-	
+
 } CHDocumentationBrowserUIMode;
 
 typedef enum {
@@ -37,83 +37,83 @@ typedef enum {
 @interface IGKWindowController : NSWindowController<IGKTableOfContentsDelegate>
 {
 	IGKApplicationDelegate *appDelegate;
-	
-	
+
+
 	//*** Basic Structure ***
 	IBOutlet NSView *contentView;
-	
+
 	IBOutlet NSView *twoPaneView;
 	IBOutlet BWSplitView *twoPaneSplitView;
 	//IBOutlet BWSplitView *twoPaneContentsSplitView;
 	IBOutlet NSView *twoPaneContentsTopView;
-	
-	
+
+
 	//*** Browser View ***
 	IBOutlet NSSegmentedControl *backForwardButton;
 	IBOutlet IGKBackForwardManager *backForwardManager;
-	
+
 	IBOutlet NSView *browserSplitViewContainer;
 	IBOutlet NSSplitView *browserSplitView;
-	
+
 	IBOutlet NSView *browserView;
 	IBOutlet NSTextField *browserViewTitle;
 	IBOutlet NSTextField *browserViewPath;
 	IBOutlet NSView *browserWebViewContainer;
-	
+
 	IBOutlet WebView *browserWebView;
 	IBOutlet NSTextField *urlField;
 	IBOutlet NSView *browserTopbar;
 	IBOutlet NSView *browserToolbar;
-	
-	
+
+
 	//*** Filter Bar ***
 	BOOL isNonFilterBarType;
-	
+
 	NSMutableArray *rightFilterBarTaskGroupedItems;
 	NSArray *rightFilterBarNameGroupedItems;
 	NSMutableArray *rightFilterBarKindGroupedItems;
-	
+
 	NSMutableArray *rightFilterBarItems;
 	IBOutlet NSView *rightFilterBarView;
 	IBOutlet NSSearchField *rightFilterBarSearchField;
 	IBOutlet NSPopUpButton *rightFilterBarGroupByMenu;
 	IBOutlet NSTableView *rightFilterBarTable;
-	
-	
+
+
 	//*** No Selection ***
 	IBOutlet NSView *noselectionView;
 	IBOutlet NSPopUpButton *noselectionPopupButton;
 	IBOutlet NSTextField *noselectionSearchField;
-	
+
 	IGKHTMLDisplayTypeMask acceptableDisplayTypes;
-	
-	
+
+
 	//*** Side Search ***
 	IBOutlet IGKArrayController *sideSearchController;
-	
+
 	IBOutlet NSView *sideSearchContainer;
-	
+
 	IBOutlet NSView *sideSearchView;
 	IBOutlet NSView *sideSearchIndicator;
 	IBOutlet NSSearchField *sideSearchViewField;
 	IBOutlet NSTableView *sideSearchViewResults;
-	
+
 	NSMutableArray *sideSearchResults;
 	NSPredicate *sideFilterPredicate;
 	NSSortDescriptor *sideSortDescriptor;
 	NSString *sideSearchQuery;
-	
-	
+
+
 	//*** Table of Contents ***
 	IBOutlet NSView *tableOfContentsView;
 	IBOutlet NSTableView *tableOfContentsTableView;
 	IBOutlet IGKTableOfContentsView *tableOfContentsPicker;
-	
+
 	NSUInteger tableOfContentsMask;
 	NSMutableArray *tableOfContentsTypes;
 	NSMutableArray *tableOfContentsTitles;
-	
-	
+
+
 	//*** In-file Find ***
 	IBOutlet NSWindow *findWindow;
 	IBOutlet NSView *findView;
@@ -121,40 +121,40 @@ typedef enum {
 	IBOutlet NSButton *findCloseButton;
 	IBOutlet NSButton *findRegexToggle;
 	IBOutlet NSSegmentedControl *findBackForwardStepper;
-	
-	
+
+
 	//*** Advanced Search ***
 	IBOutlet IGKArrayController *advancedController;
-	
+
 	IBOutlet NSView *searchView;
 	IBOutlet NSSearchField *searchViewField;
 	IBOutlet NSScrollView *searchViewPredicateEditorScrollView;
 	IBOutlet IGKPredicateEditor *searchViewPredicateEditor;
 	IBOutlet NSScrollView *searchViewTableScrollView;
 	IBOutlet NSTableView *searchViewTable;
-	
+
 	NSPredicate *advancedFilterPredicate;
-	
-	
+
+
 	//*** Other ***
 	IBOutlet NSWindow *savingProgressWindow;
 	IBOutlet NSProgressIndicator *savingProgressIndicator;
 	IGKSourceListWallpaperView *wallpaperView;
-	
+
 	IBOutlet NSPopUpButton *docsetsFilterPopupButton;
 	IBOutlet NSArrayController *docsetsController;
-	
+
 	int currentModeIndex;
-	
+
 	BOOL awaken;
 	BOOL shouldIndex;
 	BOOL isIndexing;
 	BOOL isInFullscreen;
-	
+
 	long frecencyToken;
-	
+
 	NSManagedObjectID *currentObjectIDInBrowser;
-	
+
 	NSArray *selectedFilterDocset;
 }
 

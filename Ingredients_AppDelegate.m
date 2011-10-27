@@ -35,10 +35,10 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
-{	
+{
 	srandom((unsigned long)[NSDate timeIntervalSinceReferenceDate]);
 	PFMoveToApplicationsFolderIfNecessary();
-	
+
 	[NSApp setServicesProvider:self];
 	[kitController showWindow:nil];
 }

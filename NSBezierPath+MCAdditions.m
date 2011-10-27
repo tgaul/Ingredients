@@ -18,7 +18,7 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 {
 	NSBezierPath *path = info;
 	CGPoint *points = element->points;
-	
+
 	switch (element->type) {
 		case kCGPathElementMoveToPoint:
 		{
@@ -57,7 +57,7 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 {
 	NSBezierPath *path = [NSBezierPath bezierPath];
 	CGPathApply(pathRef, path, CGPathCallback);
-	
+
 	return path;
 }
 
@@ -66,25 +66,25 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 {
 	CGMutablePathRef thePath = CGPathCreateMutable();
 	if (!thePath) return nil;
-	
+
 	unsigned int elementCount = [self elementCount];
-	
+
 	// The maximum number of points is 3 for a NSCurveToBezierPathElement.
 	// (controlPoint1, controlPoint2, and endPoint)
 	NSPoint controlPoints[3];
-	
+
 	for (unsigned int i = 0; i < elementCount; i++) {
 		switch ([self elementAtIndex:i associatedPoints:controlPoints]) {
 			case NSMoveToBezierPathElement:
-				CGPathMoveToPoint(thePath, &CGAffineTransformIdentity, 
+				CGPathMoveToPoint(thePath, &CGAffineTransformIdentity,
 								  controlPoints[0].x, controlPoints[0].y);
 				break;
 			case NSLineToBezierPathElement:
-				CGPathAddLineToPoint(thePath, &CGAffineTransformIdentity, 
+				CGPathAddLineToPoint(thePath, &CGAffineTransformIdentity,
 									 controlPoints[0].x, controlPoints[0].y);
 				break;
 			case NSCurveToBezierPathElement:
-				CGPathAddCurveToPoint(thePath, &CGAffineTransformIdentity, 
+				CGPathAddCurveToPoint(thePath, &CGAffineTransformIdentity,
 									  controlPoints[0].x, controlPoints[0].y,
 									  controlPoints[1].x, controlPoints[1].y,
 									  controlPoints[2].x, controlPoints[2].y);
@@ -107,9 +107,9 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 	CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
 	CGPathRef pathRef = [path cgPath];
 	[path release];
-	
+
 	CGContextSaveGState(context);
-		
+
 	CGContextBeginPath(context);
 	CGContextAddPath(context, pathRef);
 	CGContextSetLineWidth(context, strokeWidth);
@@ -117,12 +117,12 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 	CGPathRef strokedPathRef = CGContextCopyPath(context);
 	CGContextBeginPath(context);
 	NSBezierPath *strokedPath = [NSBezierPath bezierPathWithCGPath:strokedPathRef];
-	
+
 	CGContextRestoreGState(context);
-	
+
 	CFRelease(pathRef);
 	CFRelease(strokedPathRef);
-	
+
 	return strokedPath;
 #else
 	return nil;
@@ -132,7 +132,7 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 - (void)fillWithInnerShadow:(NSShadow *)shadow
 {
 	[NSGraphicsContext saveGraphicsState];
-	
+
 	NSSize offset = shadow.shadowOffset;
 	NSSize originalOffset = offset;
 	CGFloat radius = [shadow shadowBlurRadius];
@@ -144,19 +144,19 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 		[transform translateXBy:0 yBy:bounds.size.height];
 	else
 		[transform translateXBy:0 yBy:-bounds.size.height];
-	
+
 	NSBezierPath *drawingPath = [NSBezierPath bezierPathWithRect:bounds];
 	[drawingPath setWindingRule:NSEvenOddWindingRule];
 	[drawingPath appendBezierPath:self];
 	[drawingPath transformUsingAffineTransform:transform];
-	
+
 	[self addClip];
 	[shadow set];
 	[[NSColor blackColor] set];
 	[drawingPath fill];
-	
+
 	shadow.shadowOffset = originalOffset;
-	
+
 	[NSGraphicsContext restoreGraphicsState];
 }
 
@@ -174,16 +174,16 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 	else
 		[transform translateXBy:0 yBy:-bounds.size.height];
 	[path transformUsingAffineTransform:transform];
-	
+
 	[NSGraphicsContext saveGraphicsState];
-	
+
 	[shadow set];
 	[[NSColor blackColor] set];
 	NSRectClip(bounds);
 	[path fill];
-	
+
 	[NSGraphicsContext restoreGraphicsState];
-	
+
 	[path release];
 	[shadow release];
 }
@@ -199,24 +199,24 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 {
     NSGraphicsContext *thisContext = [NSGraphicsContext currentContext];
     float lineWidth = [self lineWidth];
-    
+
     /* Save the current graphics context. */
     [thisContext saveGraphicsState];
-    
+
     /* Double the stroke width, since -stroke centers strokes on paths. */
     [self setLineWidth:(lineWidth * 2.0)];
-    
+
     /* Clip drawing to this path; draw nothing outwith the path. */
     [self setClip];
-    
+
     /* Further clip drawing to clipRect, usually the view's frame. */
     if (clipRect.size.width > 0.0 && clipRect.size.height > 0.0) {
         [NSBezierPath clipRect:clipRect];
     }
-    
+
     /* Stroke the path. */
     [self stroke];
-    
+
     /* Restore the previous graphics context. */
     [thisContext restoreGraphicsState];
     [self setLineWidth:lineWidth];

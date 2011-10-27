@@ -11,7 +11,7 @@
 
 @interface IGKMultiSelector : NSButton {
 	int mouseState;
-	
+
 	int oldSelectedCell;
 	int selectedCell;
 }

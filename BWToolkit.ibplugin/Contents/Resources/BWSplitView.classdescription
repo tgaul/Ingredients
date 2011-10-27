@@ -1,11 +1,11 @@
 {
-	Actions = 
+	Actions =
 	{
 		"toggleCollapse:" = id;
 	};
-	Outlets = 
+	Outlets =
 	{
 	};
-    ClassName = BWSplitView; 
-    SuperClass = NSSplitView; 
+    ClassName = BWSplitView;
+    SuperClass = NSSplitView;
 }

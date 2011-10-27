@@ -2,7 +2,7 @@
 
 @interface IngredientsSearchCommand : NSScriptCommand
 {
-	
+
 }
 
 - (id)performDefaultImplementation;
@@ -11,7 +11,7 @@
 
 @interface IngredientsVisitCommand : NSScriptCommand
 {
-	
+
 }
 
 - (id)performDefaultImplementation;

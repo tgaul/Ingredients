@@ -13,13 +13,13 @@
 - (id)initWithColor:(NSColor *)color offset:(NSSize)offset blurRadius:(CGFloat)blur
 {
 	self = [self init];
-	
+
 	if (self != nil) {
 		[self setShadowColor:color];
 		[self setShadowOffset:offset];
 		[self setShadowBlurRadius:blur];
 	}
-	
+
 	return self;
 }
 

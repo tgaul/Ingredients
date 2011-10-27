@@ -9,6 +9,6 @@
 		parentWindow = NSWindow;
 		delegate = id;
 	};
-    ClassName = BWSheetController; 
-    SuperClass = NSObject; 
+    ClassName = BWSheetController;
+    SuperClass = NSObject;
 }

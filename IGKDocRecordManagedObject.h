@@ -22,7 +22,7 @@ typedef enum {
 	CHPriorityProtocol = 5,
 	CHPriorityFunctionContainer = 6,
 	CHPriorityClass = 7,
-	
+
 	CHPriorityMaximum, //DON'T USE THIS! DON'T PUT ANY ENUM CONSTANTS AFTER IT. This is a placeholder element so that I can work out the maximum priority by doing CHPriorityMaximum - 1.
 } CHRecordPriority;
 

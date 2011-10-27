@@ -16,11 +16,11 @@
 
 typedef enum {
 	//The table of contents should be hidden if the bit mask is a power of 2
-	
+
 	IGKHTMLDisplayType_None = 0,
-	
+
 	IGKHTMLDisplayType_All = 1,
-	
+
 	IGKHTMLDisplayType_Overview = 1 << 1,
 	IGKHTMLDisplayType_Tasks = 1 << 2,
 	IGKHTMLDisplayType_Properties = 1 << 3,
@@ -28,9 +28,9 @@ typedef enum {
 	IGKHTMLDisplayType_Notifications = 1 << 5,
 	IGKHTMLDisplayType_Delegate = 1 << 6,
 	IGKHTMLDisplayType_Misc = 1 << 7, //For miscellaneous things like structs, enums and consts
-	
+
 	IGKHTMLDisplayType_BindingListings = 1 << 8,
-	
+
 } IGKHTMLDisplayType;
 
 typedef NSUInteger IGKHTMLDisplayTypeMask;
@@ -42,17 +42,17 @@ BOOL IGKHTMLDisplayTypeMaskIsSingle(IGKHTMLDisplayTypeMask mask);
 {
 	NSManagedObjectContext *context;
 	NSManagedObjectContext *transientContext;
-	
+
 	IGKDocRecordManagedObject *managedObject;
 	IGKDocRecordManagedObject *transientObject;
-	
+
 	IGKHTMLDisplayTypeMask displayTypeMask;
-	
+
 	BOOL isMethodContainer;
-	
-	
+
+
 	NSMutableString *outputString;
-	
+
 	IGKFullScraper *fullScraper;
 }
 

@@ -49,8 +49,8 @@ code
 {
 	font-size: 12px;
 	list-style-type: none;
-	
-	
+
+
 }
 
 /* @end */
@@ -63,7 +63,7 @@ code
 {
 	padding: 0;
 	margin: 0;
-	
+
 	margin-top: -15px;
 	margin-bottom: -15px;
 }
@@ -97,11 +97,11 @@ code
 	text-decoration: none;
 
 	color: white;
-	
+
 
 	background-color: #7d9dca;
 	-webkit-border-radius: 4px;
-	
+
 	padding: 2px 4px;
 	margin: 2px -4px;
 	text-shadow: rgba(0,0,0,0.3) 0 1px 0;
@@ -120,20 +120,20 @@ code
 {
 	padding: 0;
 	margin: 0;
-	
+
 	font-family: "Menlo";
 	letter-spacing: -1px;
-	
+
 	font-size: 21px;
 	text-transform: none;
-	
+
 	padding-top: 6px;
 	margin-top: 24px;
 	padding-bottom: 10px;
-	
+
 	position: relative;
 	top: -1px;
-	
+
 	text-align: left;
 	border-top-style: solid;
 	border-top-width: 1px;
@@ -143,7 +143,7 @@ code
 	/*margin-top: 0;*/
 	margin-top: 14px;
 	padding-top: 0;
-		
+
 	border-top-style: none;
 }
 .methods div.description
@@ -177,7 +177,7 @@ code
 	border-top: 1px solid #e5e5e5;
 	background-color: #f7f7f7;
 	padding: 4px 11px 3px;
-	
+
 	color: #3f3f3f;
 }
 .methods .in-out-vals
@@ -239,11 +239,11 @@ a.semistealth span:hover
 {
 	background-color: rgba(125, 157, 202, 1.0);
 	-webkit-border-radius: 4px;
-	text-shadow: rgba(0,0,0,0.3) 0 1px 0;	
+	text-shadow: rgba(0,0,0,0.3) 0 1px 0;
 
 	padding: 1px 2px;
 	margin: 1px -2px;
-	
+
 	color: white;
 }
 a.semistealth:active
@@ -253,7 +253,7 @@ a.semistealth:active
 }
 a.semistealth:active span
 {
-	background-color: #7d9dca;	
+	background-color: #7d9dca;
 }
 
 a.stealth
@@ -276,11 +276,11 @@ a.stealth:active
 	text-decoration: none;
 
 	color: white;
-	
+
 
 	background-color: #7d9dca;
 	-webkit-border-radius: 4px;
-	
+
 	padding: 2px 4px;
 	margin: 2px -4px;
 	text-shadow: rgba(0,0,0,0.3) 0 1px 0;
@@ -289,10 +289,10 @@ a.stealth:active
 .methods table.info
 {
 	border-collapse: collapse;
-	
+
 	border: 1px solid #d8d8d8;
 	background-color: #f2f2f2;
-	
+
 	margin-bottom: 12px;
 }
 th
@@ -308,7 +308,7 @@ td
 {
 	background-color: #f9f9f9;
 	border-right: 1px solid #d8d8d8;
-	
+
 	padding: 0 12px 2px;
 }
 tr.first td
@@ -342,10 +342,10 @@ td code
 {
 	border-right-style: none;
 	border-left-style: none;
-	
-	border-top: 1px solid #d8d8d8;	
+
+	border-top: 1px solid #d8d8d8;
 	margin-top: 14px;
-	
+
 	border-bottom: 1px solid #d8d8d8;
 	margin-bottom: 14px;
 }
@@ -354,7 +354,7 @@ td code
 	background-color: #eaf4f9;
 	border-top-color: #d3e4ed;
 	border-bottom-color: #d3e4ed;
-	
+
 	padding-left: 20px;
 	padding-right: 20px;
 }
@@ -368,16 +368,16 @@ td code
 {
 	padding: 0;
 	margin: 0;
-	
+
 	font-family: "Menlo";
 	letter-spacing: -1px;
-		
+
 	text-transform: none;
-	
+
 	padding-top: 6px;
 	margin-top: 20px;
 	padding-bottom: 4px;
-	
+
 	text-align: left;
 }
 .annotations .annotation .submitter
@@ -385,7 +385,7 @@ td code
 	padding-left: 10px;
 	font-weight: bold;
 	font-style: italic;
-	
+
 	font-size: 14px;
 }
 .annotations .annotation .annotation-description
@@ -405,11 +405,11 @@ td code
 	background-color: #7f7f7f;
 	border: none;
 	-webkit-border-radius: 4px;
-	
+
 	color: white;
 	position: relative;
 	top: -1px;
-	
+
 	font-size: 12px;
 	text-shadow: rgba(0,0,0,0.35) 0 1px 0;
 }
@@ -424,7 +424,7 @@ td code
 .add-annotation-box
 {
 	background-color: rgba(0,0,0,0.06);
-	
+
 	padding: 20px;
 }
 .add-annotation-box p.annotation-field
@@ -469,7 +469,7 @@ td code
 {
 	opacity: 1;
 	color: #7f7f7f;
-	
+
 	font-weight: bold;
 }
 .add-annotation-box span.value strong
@@ -491,7 +491,7 @@ td code
 .add-annotation-box textarea, .add-annotation-box input
 {
 	border: 1px solid #b2b2b2;
-	
+
 	font-size: 13px;
 }
 
