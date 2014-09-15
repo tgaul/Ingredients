@@ -23,17 +23,17 @@ typedef NSString XBSourceListLabel;
 @interface XBNewSourceListCell : NSTextFieldCell {
 	XBSourceListLabel *label;
 	BOOL isHighlighted;
-	
+
 	NSImage *image;
 	NSImage *alternateImage;
-	
+
 	NSTableView *tableView;
-	
+
 	//0 not used, 1 normal, -1 hover, 2 clicked
 	int actionButtonState;
-	
+
 	BOOL hasAddButton;
-	
+
 	BOOL hasCloseButton;
 }
 

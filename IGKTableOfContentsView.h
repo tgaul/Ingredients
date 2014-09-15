@@ -11,7 +11,7 @@
 
 
 typedef enum {
-	
+
 	IGKTableOfContentsTitleColumn,
 	IGKTableOfContentsIconColumn,
 
@@ -35,9 +35,9 @@ typedef enum {
 @interface IGKTableOfContentsView : IGKEaseInOutAnimatedView {
 	IBOutlet id<IGKTableOfContentsDelegate> delegate;
 	IBOutlet NSMutableIndexSet *selectedRowIndexes;
-	
+
 	IBOutlet id splitView;
-	
+
 	NSInteger lastDraggedRow;
 }
 

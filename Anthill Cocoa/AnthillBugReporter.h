@@ -13,12 +13,12 @@
 {
 	IBOutlet NSWindow *window;
 	IBOutlet NSView *mainView;
-	
+
 	//Header
 	IBOutlet NSTextField *headerSubText;
-	
+
 	NSView *currentView;
-	
+
 	//Compose screen
 	IBOutlet NSView *composeView;
 	IBOutlet NSPopUpButton *bugType;
@@ -28,11 +28,11 @@
 	IBOutlet NSPopUpButton *replyToEmail;
 	IBOutlet NSButton *ok;
 	IBOutlet NSButton *cancel;
-	
+
 	//Progress screen
 	IBOutlet NSView *progressView;
 	IBOutlet NSProgressIndicator *spinner;
-	
+
 	//Error/Success screen
 	IBOutlet NSView *errorView;
 	IBOutlet NSTextField *errorText;
@@ -72,7 +72,7 @@
 
 
 @interface AnthillBugReporterWindowBackgroundView : NSView {
-	
+
 }
 
 @end
@@ -80,7 +80,7 @@
 
 
 @interface AnthillHTTPRequest : NSObject {
-	
+
 }
 
 + (NSString *)postURLString:(NSString *)urlString getItems:(NSDictionary *)getItems postItems:(NSDictionary *)postItems;

@@ -17,14 +17,14 @@ const int IGKAnnotationVersion = 1;
 
 - (BOOL)loadAnnotations
 {
-	
+
 	NSString *loadPath = [[[[NSApp delegate] kitController] applicationSupportDirectory] stringByAppendingPathComponent:@"Annotations.plist"];
 	if([[NSFileManager defaultManager] fileExistsAtPath:loadPath])
 	{
 		[self loadAnnotationsAtPath:loadPath];
 		return YES;
 	}
-	
+
 	return NO;
 }
 
@@ -41,31 +41,31 @@ const int IGKAnnotationVersion = 1;
 	NSDictionary *annotationDic = [NSDictionary dictionaryWithContentsOfURL:[NSURL fileURLWithPath:path]];
 	// Root object should be a dic..will allow for some meta data like version info etc..
 	// annotations should be an array whose keypath is dic.annotations
-	
+
 	NSArray *annotationsFromDic = [annotationDic objectForKey:@"annotations"];
 	for(NSDictionary *anAnnotation in annotationsFromDic)
 	{
 		IGKAnnotation *newAnnotation = [[IGKAnnotation alloc] initWithDict:anAnnotation];
 		[annotations addObject:newAnnotation];
 	}
-	
+
 }
 
 - (void)saveAnnotationsAtPath:(NSString *)path
 {
 	NSMutableDictionary *saveDic = [[NSMutableDictionary alloc] init];
 	NSMutableArray *saveArray = [[NSMutableArray alloc] init];
-	
+
 	[saveDic setObject:[NSNumber numberWithInt:IGKAnnotationVersion] forKey:@"version"];
-	
+
 	for(IGKAnnotation *anAnnotation in annotations)
 	{
 		[saveArray addObject:[anAnnotation annotationAsDict]];
 	}
 	[saveDic setObject:saveArray forKey:@"annotations"];
-	
+
 	[saveDic writeToURL:[NSURL fileURLWithPath:path] atomically:YES];
-	
+
 }
 
 - (void)addAnnotation:(IGKAnnotation *)newAnnotation
@@ -77,9 +77,9 @@ const int IGKAnnotationVersion = 1;
 - (NSArray *)annotationsForURL:(NSString *)URL
 {
 	//FIXME: This could be made faster by using a pregenerated dictionary of URLs -> sorted annotation arrays
-	
+
 	NSMutableArray *subset = [[NSMutableArray alloc] init];
-	
+
 	for (IGKAnnotation *a in annotations)
 	{
 		if ([[a docurl] isCaseInsensitiveEqual:URL])
@@ -87,7 +87,7 @@ const int IGKAnnotationVersion = 1;
 			[subset addObject:a];
 		}
 	}
-	
+
 	return [subset sortedArrayUsingSelector:@selector(compare:)];
 }
 

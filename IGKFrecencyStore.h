@@ -12,7 +12,7 @@
 @interface IGKFrecencyStore : NSObject {
 	NSString *identifier;
 	IGKCircularBuffer buffer;
-	
+
 	BOOL hasChanges;
 }
 

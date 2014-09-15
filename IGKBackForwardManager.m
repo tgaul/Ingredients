@@ -28,14 +28,14 @@
 	{
 		backStack = [[NSMutableArray alloc] init];
 		forwardStack = [[NSMutableArray alloc] init];
-		
+
 	}
 	return self;
 }
 
 
 - (void)visitPage:(WebHistoryItem *)item
-{	
+{
 	//If item has the same URL as currentItem, we ignore it
 	NSString *itemURL = [item URLString];
 	NSString *currentItemURL = [currentItem URLString];
@@ -44,32 +44,32 @@
 	{
 		return;
 	}
-	
+
 	//Push currentItem onto backStack, if it exists
 	if (currentItem)
 	{
 		[self willChangeValueForKey:@"backStack"];
 		[backStack addObject:currentItem];
 		[[WebHistory optionalSharedHistory] addItems:[NSArray arrayWithObject:item]];
-		
+
 		[self didChangeValueForKey:@"backStack"];
 	}
-	
+
 	currentItem = item;
-	
+
 	//Dump whatever's in forwardStack
 	[self willChangeValueForKey:@"forwardStack"];
 	[forwardStack removeAllObjects];
 	[self didChangeValueForKey:@"forwardStack"];
-	
+
 	if ([delegate respondsToSelector:@selector(backForwardManagerUpdatedLists:)])
 		[delegate backForwardManagerUpdatedLists:self];
 }
 
 - (void)loadItem:(WebHistoryItem *)item
-{	
+{
 	NSURL *url = [NSURL URLWithString:[item URLString]];
-	
+
 	if ([delegate respondsToSelector:@selector(loadURL:recordHistory:)])
 		[delegate loadURL:url recordHistory:NO];
 }
@@ -77,14 +77,14 @@
 {
 	if ([backStack count] > 0)
 		return YES;
-	
+
 	return NO;
 }
 - (BOOL)canGoForward
 {
 	if ([forwardStack count] > 0)
 		return YES;
-	
+
 	return NO;
 }
 - (IBAction)goBack:(id)sender
@@ -98,27 +98,27 @@
 
 
 - (void)goBackBy:(NSInteger)amount
-{	
+{
 	//Check that there's a page to go back to
 	if ([backStack count] == 0)
 	{
 		return;
 	}
-	
+
 	//Check that amount is in range
 	if (amount < 1 || amount > [backStack count])
 	{
 		return;
 	}
-	
+
 	if (currentItem || amount > 1)
 	{
 		[self willChangeValueForKey:@"forwardStack"];
-		
+
 		//Push currentItem onto forwardStack, if it exists
 		if (currentItem)
 			[forwardStack addObject:currentItem];
-		
+
 		//Push the last [amount] objects into forwardStack
 		if (amount > 1)
 		{
@@ -128,45 +128,45 @@
 				[forwardStack addObject:item];
 			}
 		}
-		
+
 		[self didChangeValueForKey:@"forwardStack"];
 	}
-	
+
 	//Pop amount objects off backStack and assign the last one to currentItem
 	currentItem = [backStack objectAtIndex:[backStack count] - amount];
-	
+
 	[self willChangeValueForKey:@"backStack"];
 	[backStack removeObjectsInRange:NSMakeRange([backStack count] - amount, amount)];
 	[self didChangeValueForKey:@"backStack"];
-	
+
 	if ([delegate respondsToSelector:@selector(backForwardManagerUpdatedLists:)])
 		[delegate backForwardManagerUpdatedLists:self];
-	
+
 	//Load the page we're going back to
 	[self loadItem:currentItem];
 }
 - (void)goForwardBy:(NSInteger)amount
-{	
+{
 	//Check that there's a page to go forward to
 	if ([forwardStack count] == 0)
 	{
 		return;
 	}
-	
+
 	//Check that amount is in range
 	if (amount < 1 || amount > [forwardStack count])
 	{
 		return;
 	}
-	
+
 	if (currentItem || amount > 1)
 	{
 		[self willChangeValueForKey:@"backStack"];
-		
+
 		//Push currentItem onto forwardStack, if it exists
 		if (currentItem)
 			[backStack addObject:currentItem];
-		
+
 		//Push the last [amount] objects into forwardStack
 		if (amount > 1)
 		{
@@ -176,20 +176,20 @@
 				[backStack addObject:item];
 			}
 		}
-		
+
 		[self didChangeValueForKey:@"backStack"];
 	}
-	
+
 	//Pop amount objects off forwardStack and assign the last one to currentItem
 	currentItem = [forwardStack objectAtIndex:[forwardStack count] - amount];
-	
+
 	[self willChangeValueForKey:@"forwardStack"];
 	[forwardStack removeObjectsInRange:NSMakeRange([forwardStack count] - amount, amount)];
 	[self didChangeValueForKey:@"forwardStack"];
-	
+
 	if ([delegate respondsToSelector:@selector(backForwardManagerUpdatedLists:)])
 		[delegate backForwardManagerUpdatedLists:self];
-	
+
 	//Load the page we're going forward to
 	[self loadItem:currentItem];
 }
@@ -202,7 +202,7 @@
 	{
 		[reverseCopy addObject:x];
 	}
-	
+
 	return reverseCopy;
 }
 - (WebHistoryItem *)backItem
@@ -225,7 +225,7 @@
 	{
 		[reverseCopy addObject:x];
 	}
-	
+
 	return reverseCopy;
 }
 

@@ -1,27 +1,27 @@
 typedef struct {
 	// 0 <= elementCount <= actualSize <= targetSize
-	
+
 	//The number of elements in the buffer
 	CFIndex elementCount;
-	
+
 	//The amount of elements that we have allocated enough memory to hold. Must not be 0
 	CFIndex allocatedCount;
-	
+
 	//The maximum number of elements that the buffer will grow to hold before it starts discarding things
 	CFIndex maximumCount;
-	
+
 	//The size in bytes of each element in the buffer
 	CFIndex elementSize;
-	
+
 	//A pointer to all the elements
 	void* items;
-	
+
 	//The offset of the element that was added the longest time ago
 	CFIndex oldestElement;
-	
+
 	//The offset of the element that was added most recently
 	CFIndex youngestElement;
-	
+
 } IGKCircularBuffer;
 
 //Create a buffer and fill it with data

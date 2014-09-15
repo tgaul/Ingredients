@@ -11,26 +11,26 @@
 typedef enum _CHSymbolButtonImageType
 {
 	CHSymbolButtonTypedef = 1<<1,
-	
+
 	CHSymbolButtonStruct = 1<<2,
 	CHSymbolButtonUnion = 1<<3,
 	CHSymbolButtonEnum = 1<<4,
 	CHSymbolButtonCppClass = 1<<5,
 	CHSymbolButtonCppNamespace = 1<<6,
-	
+
 	CHSymbolButtonObjcInterface = 1<<7,
 	CHSymbolButtonObjcImplementation = 1<<8,
-	
+
 	CHSymbolButtonObjcClass = 1<<16,
 	CHSymbolButtonObjcProtocol = 1<<17,
 	CHSymbolButtonObjcCategory = 1<<18, //For example: ObjcCategory | ObjcInterface
 	CHSymbolButtonFunctionContainer = 1<<19,
-	
+
 	CHSymbolButtonVariable = 1<<20,
 	CHSymbolButtonObjcMethod = 1<<21,
 	CHSymbolButtonObjcProperty = 1<<22,
 	CHSymbolButtonFunction = 1<<23,
-	
+
 	CHSymbolButtonLocalScope = 1<<25,
 	CHSymbolButtonInstanceScope = 1<<26,
 	CHSymbolButtonStaticScope = 1<<27,
@@ -38,17 +38,17 @@ typedef enum _CHSymbolButtonImageType
 
 	CHSymbolButtonMacro = 1<<30,
 	CHSymbolButtonDefine = 1<<31,
-	
+
 	CHSymbolButtonDontDrawBorder = 1<<9,
 	CHSymbolButtonObjcBindingsListing = 1<<10,
 	CHSymbolButtonNotification = 1<<11,
-	
-} CHSymbolButtonImageType; 
+
+} CHSymbolButtonImageType;
 
 typedef uint64_t CHSymbolButtonImageMask;
 
 @interface CHSymbolButtonImage : NSObject {
-	
+
 }
 
 + (NSArray *)symbolImageWithTypeString:(NSString *)typeString drawBorder:(BOOL)drawBorder;

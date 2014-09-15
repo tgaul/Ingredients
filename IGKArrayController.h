@@ -14,22 +14,22 @@
 @interface IGKArrayController : NSObject<NSTableViewDataSource, NSTableViewDelegate>
 {
 	IBOutlet NSTableView *tableView;
-	
+
 	NSUInteger maxRows;
-	
+
 	NSPredicate *predicate;
 	NSArray *smartSortDescriptors;
 	NSArray *currentSortDescriptors;
-	
+
 	NSMutableArray *fetchedObjects;
-	
+
 	id vipObject;
 	BOOL fetchContainsVipObject;
-	
+
 	BOOL sortIsAscending;
 	NSString *sortColumn;
 	NSString *entityToFetch;
-	
+
 	IBOutlet id delegate;
 	BOOL isSearching;
 	NSTimeInterval startedSearchTimeInterval;

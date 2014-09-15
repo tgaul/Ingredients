@@ -15,10 +15,10 @@
 {
 	//We want to remove any null comparison predicates from our predicate
 	NSCompoundPredicate *predicate = (NSCompoundPredicate *)[super predicate];
-	
+
 	if (!predicate)
 		return nil;
-	
+
 	if ([predicate isKindOfClass:[NSComparisonPredicate class]])
 	{
 		predicate = [[NSCompoundPredicate alloc] initWithType:NSAndPredicateType subpredicates:[NSArray arrayWithObject:predicate]];
@@ -27,17 +27,17 @@
 	{
 		return predicate;
 	}
-	
+
 	requestedEntityName = @"Any";
-	
+
 	NSArray *subpredicates = [predicate subpredicates];
 	NSMutableArray *newSubpredicates = [[NSMutableArray alloc] initWithCapacity:[subpredicates count]];
-	
+
 	for (NSComparisonPredicate *cmpP in subpredicates)
 	{
 		NSExpression *right = [cmpP rightExpression];
 		NSExpression *left = [cmpP leftExpression];
-		
+
 		if([[left keyPath] isEqual:@"xkind"])
 		{
 			requestedEntityName = [right constantValue];
@@ -49,15 +49,15 @@
 			[newSubpredicates addObject:cmpP];
 			continue;
 		}
-		
+
 		id cv = [right constantValue];
-		
+
 		if (cv && (![cv respondsToSelector:@selector(length)] || [cv length] > 0))
 		{
 			[newSubpredicates addObject:cmpP];
 		}
 	}
-		
+
 	return [[NSCompoundPredicate alloc] initWithType:[predicate compoundPredicateType] subpredicates:newSubpredicates];
 }
 
@@ -65,7 +65,7 @@
 - (NSPredicate *)predicateWithEntityNamed:(NSString **)outEntityName
 {
 	NSPredicate *newPredicate = [self predicate];
-	
+
 	if (outEntityName != NULL)
 	{
 		if([requestedEntityName isEqual:@"Class"])
@@ -88,7 +88,7 @@
 		{
 			requestedEntityName = @"ObjCBindingsListing";
 		}
-		
+
 		else if([requestedEntityName isEqual:@"Method"])
 		{
 			requestedEntityName = @"ObjCMethod";
@@ -101,7 +101,7 @@
 		{
 			requestedEntityName = @"CFunction";
 		}
-		
+
 		else if([requestedEntityName isEqual:@"Notification"])
 		{
 			requestedEntityName = @"ObjCNotification";
@@ -114,7 +114,7 @@
 		{
 			requestedEntityName = @"CConstant";
 		}
-		
+
 		else if([requestedEntityName isEqual:@"Enum"])
 		{
 			requestedEntityName = @"CEnum";
@@ -123,12 +123,12 @@
 		{
 			requestedEntityName = @"CTypedef";
 		}
-		
+
 		else {
 			requestedEntityName = @"DocRecord";
 		}
 
-		
+
 		*outEntityName = requestedEntityName;
 	}
 	return newPredicate;

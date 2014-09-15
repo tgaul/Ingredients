@@ -15,11 +15,11 @@
 {
 	IBOutlet WebView *webView;
 	IBOutlet id delegate;
-	
+
 	/* The backStack stores all WebHistoryItems we can go back to.
 	 The forwardStack stores all WebHistoryItems we can go forward to.
 	 When we go back we push currentItem onto backStack, and then pop an item off forwardStack and set it to current item. */
-	
+
 	NSMutableArray *backStack;
 	WebHistoryItem *currentItem;
 	NSMutableArray *forwardStack;

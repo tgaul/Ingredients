@@ -25,7 +25,7 @@
 @end
 
 @interface IGKSometimesCenteredTextCell2 : IGKStrikethroughTextCell {
-	
+
 }
 
 @end

@@ -16,10 +16,10 @@
 + (void)drawStrikethroughInRect:(NSRect)rect
 {
 	[[NSColor redColor] set];
-	
+
 	rect.origin.y = rect.origin.y + floor(rect.size.height / 2.0) + 2;
 	rect.size.height = 1.0;
-	
+
 	NSRectFillUsingOperation(rect, NSCompositeSourceOver);
 }
 
@@ -46,7 +46,7 @@
 {
 	cellFrame.origin.y += [self tag];
 	[super drawWithFrame:cellFrame inView:controlView];
-	
+
 	if (hasStrikethrough)
 		[[self class] drawStrikethroughInRect:cellFrame];
 }
@@ -62,7 +62,7 @@
 	 titleFrame.origin.y += [self tag];
 	 return titleFrame;
  }
- 
+
  - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
 	 NSRect titleRect = [self titleRectForBounds:cellFrame];
 	 [[self attributedStringValue] drawInRect:titleRect];

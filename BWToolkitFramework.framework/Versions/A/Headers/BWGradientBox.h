@@ -8,12 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BWGradientBox : NSView 
+@interface BWGradientBox : NSView
 {
 	NSColor *fillStartingColor, *fillEndingColor, *fillColor;
 	NSColor *topBorderColor, *bottomBorderColor;
 	float topInsetAlpha, bottomInsetAlpha;
-	
+
 	BOOL hasTopBorder, hasBottomBorder, hasGradient, hasFillColor;
 }
 

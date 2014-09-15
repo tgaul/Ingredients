@@ -14,5 +14,5 @@ Conforms to :: text field
 
 Kind :: popup menu with options
    Somebody: The menu options are "Class", "Category", "Protocol", "Method", "Function", "Macro", "C type" (more?)
-   
+
    JN: Extract this out of the predicate. Take a note of it. Set it as part of the fetch request's entity.

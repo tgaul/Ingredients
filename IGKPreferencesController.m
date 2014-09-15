@@ -28,10 +28,10 @@
 	{
 		developerDirectories = [[NSMutableArray alloc] init];
 		docsets = [[NSMutableArray alloc] init];
-				
+
 		[self reloadTableViews];
 	}
-	
+
 	return self;
 }
 - (void)windowDidLoad
@@ -47,7 +47,7 @@
 - (void)showWindow:(id)sender
 {
 	[[self window] center];
-	
+
 	[super showWindow:sender];
 }
 
@@ -79,20 +79,20 @@
 - (void)switchToView:(NSView *)view item:(NSToolbarItem *)toolbarItem animate:(BOOL)animate
 {
 	[[[self window] toolbar] setSelectedItemIdentifier:[toolbarItem itemIdentifier]];
-	
+
 	[currentView removeFromSuperview];
-	
+
 	[view setFrameOrigin:NSZeroPoint];
 	[[[self window] contentView] addSubview:view];
-	
+
 	currentView = view;
-	
+
 	CGFloat borderHeight = [[self window] frame].size.height - [[[self window] contentView] frame].size.height;
-	
+
 	NSRect newWindowFrame = [[self window] frame];
 	newWindowFrame.size.height = [view frame].size.height + borderHeight;
 	newWindowFrame.origin.y += [[self window] frame].size.height - newWindowFrame.size.height;
-	
+
 	[[self window] setFrame:newWindowFrame display:YES animate:animate];
 }
 
@@ -100,10 +100,10 @@
 {
 	if ([[NSUserDefaults standardUserDefaults] valueForKey:@"developerDirectories"])
 		developerDirectories = [[[NSUserDefaults standardUserDefaults] valueForKey:@"developerDirectories"] mutableCopy];
-	
+
 	if ([[NSUserDefaults standardUserDefaults] valueForKey:@"docsets"])
 		docsets = [[[NSUserDefaults standardUserDefaults] valueForKey:@"docsets"] mutableCopy];
-	
+
 	[developerDirectoriesTableView reloadData];
 	[docsetsTableView reloadData];
 }
@@ -111,28 +111,28 @@
 #pragma mark Docsets Logic
 
 - (void)selectedFilterDocsetForPath:(NSString *)path
-{	
+{
 	BOOL changedSomething = NO;
-	
+
 	for (NSDictionary *docset in [docsets copy])
 	{
 		BOOL isDocset = [[docset valueForKey:@"path"] isEqual:path];
-		
+
 		if ([[docset valueForKey:@"isSelected"] boolValue] != isDocset)
-		{			
+		{
 			NSDictionary *newDocset = [docset mutableCopy];
 			[newDocset setValue:[NSNumber numberWithBool:isDocset] forKey:@"isSelected"];
-			
+
 			[docsets replaceObjectAtIndex:[docsets indexOfObject:docset] withObject:newDocset];
-			
+
 			changedSomething = YES;
 		}
 	}
-	
+
 	if (changedSomething)
 	{
 		[self saveChangesNeedsRelaunch:NO];
-		
+
 		[self reloadTableViews];
 	}
 }
@@ -146,7 +146,7 @@
 			return [docset valueForKey:@"path"];
 		}
 	}
-	
+
 	return nil;
 }
 
@@ -155,13 +155,13 @@
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
 	[openPanel setCanChooseFiles:NO];
 	[openPanel setCanChooseDirectories:YES];
-	
+
 	[openPanel beginWithCompletionHandler:^(NSInteger result) {
 		if (result != NSFileHandlingPanelOKButton)
 			return;
-		
+
 		NSString *path = [[openPanel URL] path];
-		
+
 		//Sanity check path. If it really is a Developer directory, it should have a Library/version.plist
 		NSString *versionPlistPath = [path stringByAppendingPathComponent:@"Library/version.plist"];
 		BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:versionPlistPath];
@@ -170,9 +170,9 @@
 			NSBeep();
 			return;
 		}
-		
+
 		[self addDeveloperDirectoryPath:path];
-		
+
 		[self reloadTableViews];
 	}];
 }
@@ -180,13 +180,13 @@
 {
 	NSMutableDictionary *devDir = [[NSMutableDictionary alloc] init];
 	[devDir setValue:path forKey:@"path"];
-	
+
 	for (NSDictionary *dict in developerDirectories)
 	{
 		if ([[dict valueForKey:@"path"] isEqual:path])
 			return;
 	}
-	
+
 	[developerDirectories addObject:devDir];
 	[self saveChanges];
 }
@@ -197,16 +197,16 @@
 	[docset setValue:path forKey:@"path"];
 	[docset setValue:localizedUserInterfaceName forKey:@"name"];
 	[docset setValue:devDir forKey:@"developerDirectory"];
-	
+
 	for (NSDictionary *dict in docsets)
 	{
 		if ([[dict valueForKey:@"path"] isEqual:path])
 			return ([[dict valueForKey:@"isEnabled"] boolValue] ? 1 : 0);
 	}
-	
+
 	[docsets addObject:docset];
 	[self saveChanges];
-	
+
 	return -1;
 }
 - (IBAction)removeSelectedDeveloperDirectories:(id)sender
@@ -234,7 +234,7 @@
 	NSIndexSet *selectedIndicies = [developerDirectoriesTableView selectedRowIndexes];
 	[developerDirectories removeObjectsAtIndexes:selectedIndicies];
 	[self saveChanges];
-	
+
 	[self reloadTableViews];
 }
 
@@ -247,21 +247,21 @@
 	BOOL devDirsChanged = NO;
 	if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"developerDirectories"] isEqual:developerDirectories])
 		devDirsChanged = YES;
-	
+
 	BOOL docsetsChanged = NO;
 	if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"docsets"] isEqual:docsets])
 		docsetsChanged = YES;
-	
+
 	[[NSUserDefaults standardUserDefaults] setValue:developerDirectories forKey:@"developerDirectories"];
 	[[NSUserDefaults standardUserDefaults] setValue:docsets forKey:@"docsets"];
-	
+
 	if (needsRelaunch)
 	{
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"needsReindex"];
 	}
-	
+
 	[[NSUserDefaults standardUserDefaults] synchronize];
-	
+
 	if (needsRelaunch)
 	{
 		if (devDirsChanged || docsetsChanged)
@@ -273,32 +273,32 @@
 	Class SUUpdaterClass = NSClassFromString(@"SUUpdater");
 	if (SUUpdaterClass == Nil)
 		return;
-	
+
 	// Copy the relauncher into a temporary directory so we can get to it after the new version's installed.
 	NSString *relaunchPath = nil;
 	NSString *relaunchPathToCopy = [[NSBundle bundleForClass:SUUpdaterClass] pathForResource:@"relaunch" ofType:@""];
 	if (![relaunchPathToCopy length])
 		return;
-	
-	NSString *targetPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[relaunchPathToCopy lastPathComponent]];	
+
+	NSString *targetPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[relaunchPathToCopy lastPathComponent]];
 	if (![targetPath length])
 		return;
-	
+
 	// Only the paranoid survive: if there's already a stray copy of relaunch there, we would have problems.
 	NSError *error = nil;
 	[[NSFileManager defaultManager] removeItemAtPath:targetPath error:nil];
 	if ([[NSFileManager defaultManager] copyItemAtPath:relaunchPathToCopy toPath:targetPath error:&error])
 		relaunchPath = [targetPath retain];
-	
+
 	if (!relaunchPath || ![[NSFileManager defaultManager] fileExistsAtPath:relaunchPath])
 	{
 		NSBeep();
 		return;
-	}		
-	
+	}
+
 	NSString *pathToRelaunch = [[NSBundle mainBundle] bundlePath];
 	[NSTask launchedTaskWithLaunchPath:relaunchPath arguments:[NSArray arrayWithObjects:pathToRelaunch, [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]], nil]];
-	
+
 	[NSApp terminate:self];
 }
 
@@ -313,7 +313,7 @@
 	{
 		return [docsets count];
 	}
-	
+
 	return 0;
 }
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
@@ -334,7 +334,7 @@
 	else if (tableView == docsetsTableView)
 	{
 		NSDictionary *docset = [docsets objectAtIndex:row];
-		
+
 		if ([[tableColumn identifier] isEqual:@"isEnabled"])
 		{
 			return [docset valueForKey:@"isEnabled"];
@@ -352,7 +352,7 @@
 			return [docset valueForKey:@"developerDirectory"];
 		}
 	}
-	
+
 	return nil;
 }
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
@@ -363,10 +363,10 @@
 		{
 			NSDictionary *docset = [[docsets objectAtIndex:row] mutableCopy];
 			[docset setValue:[NSNumber numberWithBool:[object boolValue]] forKey:@"isEnabled"];
-			
+
 			[docsets replaceObjectAtIndex:row withObject:docset];
 			[self saveChangesNeedsRelaunch:YES];
-			
+
 			[self reloadTableViews];
 		}
 	}
@@ -378,7 +378,7 @@
 	//Disallow selection for the docsets table view
 	if (tableView == docsetsTableView && row != -1)
 		return NO;
-	
+
 	return YES;
 }
 */
@@ -417,7 +417,7 @@
 {
 	BOOL checks = [[SUUpdater sharedUpdater] automaticallyChecksForUpdates];
 	BOOL downloads = [[SUUpdater sharedUpdater] automaticallyDownloadsUpdates];
-	
+
 	if (checks && downloads)
 		return 1;
 	else if (checks && !downloads)

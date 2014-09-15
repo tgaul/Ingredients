@@ -8,9 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BWTransparentPopUpButton : NSPopUpButton 
+@interface BWTransparentPopUpButton : NSPopUpButton
 {
-	
+
 }
 
 @end

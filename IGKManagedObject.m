@@ -24,7 +24,7 @@
 {
 	if (![self hasKey:key])
 		return nil;
-	
+
 	return [self valueForKey:key];
 }
 

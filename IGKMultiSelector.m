@@ -27,7 +27,7 @@
 {
 	selectedCell = newSelectedCell;
 	oldSelectedCell = newSelectedCell;
-	
+
 	[self setNeedsDisplay:YES];
 }
 
@@ -38,15 +38,15 @@
 - (void)drawRect:(NSRect)rect
 {
 	rect = [self bounds];
-	
+
 	BOOL isMain = [self isActive];
-	
+
 	NSDrawThreePartImage(rect,
 						 [NSImage imageNamed:@"MultiSel_window_frame_button_active_left"],
 						 [NSImage imageNamed:@"MultiSel_window_frame_button_active_middle"],
 						 [NSImage imageNamed:@"MultiSel_window_frame_button_active_right"],
 						 NO, NSCompositeSourceOver, (isMain ? 1.0 : 0.7), YES);
-	
+
 	/*
 	if (mouseState == 1)
 	{
@@ -56,21 +56,21 @@
 							 NO, NSCompositeSourceOver, 0.5, YES);
 	}
 	*/
-	
+
 	//Draw dividers
 	NSImage *dividerImage = [NSImage imageNamed:@"MultiSel_Divider"];
 	[dividerImage drawAtPoint:NSMakePoint(32 - 4, 0) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:(isMain ? 1.0 : 0.7 * 1.0)];
 	[dividerImage drawAtPoint:NSMakePoint(61 - 4, 0) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:(isMain ? 1.0 : 0.7 * 1.0)];
-	
+
 	//Draw icons
-	
+
 	//No Search
 	[self drawCellNamed:@"NoSearch" point:NSMakePoint(11, 3) index:0];
 	[self drawCellNamed:@"SideSearch" point:NSMakePoint(40, 3) index:1];
 	[self drawCellNamed:@"AdvSearch" point:NSMakePoint(69, 3) index:2];
-	
-	
-	
+
+
+
 	/*
 	NSImage *icon = [self image];
 	NSSize size = [icon size];
@@ -89,26 +89,26 @@
 		else
 			subtype = @"Sel";
 	}
-	
+
 	NSString *imageName = [NSString stringWithFormat:@"MultiSel_%@_%@", name, subtype];
 	NSImage *image = [NSImage imageNamed:imageName];
-	
+
 	NSRect rect;
 	rect.origin = point;
 	rect.size = [image size];
-	
+
 	[image drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
 }
 
 - (void)mouseDown:(NSEvent *)event
 {
 	NSPoint p = [self convertPoint:[event locationInWindow] fromView:nil];
-	
+
 	if (NSPointInRect(p, [self bounds]))
 		mouseState = 1;
 	else
 		mouseState = 0;
-	
+
 	if (p.x < 0)
 		selectedCell = oldSelectedCell;
 	else if (p.x < 34)
@@ -119,7 +119,7 @@
 		selectedCell = 2;
 	else
 		selectedCell = oldSelectedCell;
-	
+
 	[self setNeedsDisplay:YES];
 }
 - (void)mouseDragged:(NSEvent *)event
@@ -129,7 +129,7 @@
 - (void)mouseUp:(NSEvent *)event
 {
 	NSPoint p = [self convertPoint:[event locationInWindow] fromView:nil];
-	
+
 	if (selectedCell == -1 || selectedCell == oldSelectedCell)
 	{
 		selectedCell = oldSelectedCell;
@@ -137,14 +137,14 @@
 	else
 	{
 		oldSelectedCell = selectedCell;
-		
+
 		if (NSPointInRect(p, [self bounds]))
 			if ([[self target] respondsToSelector:[self action]])
 				[[self target] performSelector:[self action]];
 	}
-	
+
 	mouseState = 0;
-	
+
 	[self setNeedsDisplay:YES];
 }
 

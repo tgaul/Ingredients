@@ -14,14 +14,14 @@ NSString *IGKDocSetShortPlatformName(NSString *platformFamily)
 		return @"mac";
 	else if ([platformFamily isEqual:@"iphoneos"])
 		return @"iphone";
-	
+
 	return platformFamily;
 }
 NSString *IGKDocSetShortVersionName(NSString *platformVersion)
 {
 	if (![platformVersion length])
 		return @"unknown";
-	
+
 	return platformVersion;
 }
 NSString *IGKDocSetLocalizedUserInterfaceName(NSString *platformFamily, NSString *version)
@@ -32,7 +32,7 @@ NSString *IGKDocSetLocalizedUserInterfaceName(NSString *platformFamily, NSString
 	 iPhone 3.2
 	 Mac 10.6
 	 */
-	
+
 	//*** Platform ***
 	NSString *platform = nil;
 	if ([platformFamily isEqual:@"macosx"])
@@ -42,12 +42,12 @@ NSString *IGKDocSetLocalizedUserInterfaceName(NSString *platformFamily, NSString
 	else if (![platformFamily length])
 		platform = @"Unknown ";
 	else
-		platform = [platformFamily stringByAppendingString:@" "];	
-	
+		platform = [platformFamily stringByAppendingString:@" "];
+
 	//*** Version ***
 	if (version == nil)
 		version = @"";
-	
+
 	NSString *localizedName = [platform stringByAppendingString:version];
 	return localizedName;
 }

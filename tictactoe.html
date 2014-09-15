@@ -1,20 +1,20 @@
 <html>
 <head>
     <title>Tic-Tac-Toe</title>
-    
+
     <link rel="stylesheet" href="tictactoe_style.css" type="text/css" media="screen">
-    
+
     <script type="text/javascript" charset="utf-8">
-    
+
     var bitboard = [0, 0, 0,   0, 0, 0,   0, 0, 0]; //0 for unused, 1 for human, 2 for computer
     var totalScore = {
         you: 0,
         computer: 0,
         draws: 0
     }
-    
+
     var inFinalState = false;
-    
+
     Board = function() {
         this.rotationMap = [0, 1, 2,   3, 4, 5,   6, 7, 8];
         this[0] = bitboard[0]; //[0, 0, 0,   0, 0, 0,   0, 0, 0];
@@ -27,12 +27,12 @@
         this[7] = bitboard[7];
         this[8] = bitboard[8];
     }
-    
+
     //Apply a symmetry. Each symmetry is numbered from 0 to 7.
     Board.prototype.applySymmetry = function(n) {
         //e = e
         if (n == 0) return;
-        
+
         //r_π/2 = r
         if (n == 1) { this.rotate(); return; }
 
@@ -41,29 +41,29 @@
 
         //r_3π/2 = r.r.r
         if (n == 3) { this.rotate(); this.rotate(); this.rotate(); return; }
-        
+
         //q_0 = q
         if (n == 4) { this.reflect(); return; }
-        
+
         //q_π/4 = r.q
         if (n == 5) { this.reflect(); this.rotate(); return; }
-        
+
         //q_π/2 = r.r.q
         if (n == 6) { this.reflect(); this.rotate(); this.rotate(); return; }
-        
+
         //q_3π/4 = r.r.r.q
         if (n == 7) { this.reflect(); this.rotate();  this.rotate(); this.rotate(); return; }
     }
     Board.prototype.inverseSymmetry = function(n) {
         return [0, 3, 2, 1, 4, 5, 6, 7][n];
     }
-    
+
     Board.prototype.rotate = function() {
         var r = this.rotationMap;
         this.rotationMap = [r[6], r[3], r[0], r[7], r[4], r[1], r[8], r[5], r[2]];
-        
+
         var x = [this[0], this[1], this[2], this[3], this[4], this[5], this[6], this[7], this[8]];
-        
+
         this[0] = x[6];
         this[1] = x[3];
         this[2] = x[0];
@@ -73,79 +73,79 @@
         this[6] = x[8];
         this[7] = x[5];
         this[8] = x[2];
-        
+
         return true;
     }
     Board.prototype.reflect = function() {
         //Reflect in the horizontal centerline
         var r = this.rotationMap;
         this.rotationMap = [r[6], r[7], r[8], r[3], r[4], r[5], r[0], r[1], r[2]];
-        
+
         var x = [this[0], this[1], this[2], this[3], this[4], this[5], this[6], this[7], this[8]];
-        
+
         this[0] = x[6];
         this[1] = x[7];
         this[2] = x[8];
         this[6] = x[0];
         this[7] = x[1];
         this[8] = x[2];
-        
+
         return true;
     }
-    
+
     Board.prototype.set = function(i)
-    {        
+    {
         bitboard[this.rotationMap[i]] = 2;
         this[i] = 2;
-        
+
         document.getElementById("" + this.rotationMap[i]).innerHTML = 'O';
-        
+
         detectWin();
     }
-    
-    
+
+
     function alertWithInfobox(str, color)
     {
         var infobox = document.getElementById("infobox");
         infobox.className = color;
-		
+
         infobox.style.display = 'block';
         infobox.innerHTML = str;
     }
     function hideInfobox()
     {
         var infobox = document.getElementById("infobox");
-        
+
         infobox.style.display = 'none';
         infobox.innerHTML = '';
     }
-    
+
     function cc(e, n)
     {
         if (inFinalState)
             return;
-        
+
         if (bitboard[e.id] != 0)
         {
             alertWithInfobox("You can't play that move!", "blue");
             return;
         }
-        
+
         e.innerHTML = "&#x2718;";
         bitboard[e.id] = 1;
         if (detectWin())
             return;
-        
+
         playComputerTurn();
     }
-    
+
     function playComputerTurn()
     {
         var myBitBoard = new Board();
-        
+
         if (calculateComputerTurn2(myBitBoard))
             return true;
-		
+
         //Someone won
         if (!detectWin())
         {
@@ -156,81 +156,81 @@
         }
         return false;
     }
-    
+
     function detectWin() {
-        
+
         if (testWin())
         {
             return true;
         }
-        
+
         return false;
     }
     function testWin() {
         b = new Board();
-        
+
         for (j = 0; j < 4; j++)
         {
             if (testOne(b, [0, 1, 2]))
-                return true;   
+                return true;
             if (testOne(b, [0, 3, 6]))
                 return true;
             if (testOne(b, [3, 4, 5]))
                 return true;
             if (testOne(b, [0, 4, 8]))
                 return true;
-            
+
             b.rotate();
         }
-        
+
         return false;
     }
-    
+
     function resetgame()
     {
         inFinalState = false;
         for (var i = 0; i < 9; i++)
         {
             document.getElementById(String(i)).innerHTML = "";
-            
+
             bitboard[i] = 0;
         }
-        
+
         hideInfobox();
     }
     function resetscore()
     {
         for(var k in totalScore)
         {
-           document.getElementById('score_' + k).innerHTML = totalScore[k]; 
+           document.getElementById('score_' + k).innerHTML = totalScore[k];
         }
     }
-    
+
     function rotate(b) {
         return [b[6], b[3], b[0], b[7], b[4], b[1], b[8], b[5], b[2]];
     }
-    
+
     function shuffle(collection) {
         for (var i = collection.length - 1; i >= 1; i--)
         {
             var j = randomBetween(0, i);
-            
+
             var temp = collection[j];
             collection[j] = collection[i];
             collection[i] = temp;
         }
     }
-    
+
     function isFinished() {
         return b[0] != 0 && b[1] != 0 && b[2] != 0 && b[3] != 0 && b[4] != 0 && b[5] != 0 && b[6] != 0 && b[7] != 0 && b[8] != 0;
     }
-    
+
     function calculateComputerTurn2(b) {
         detectWin();
-        
+
         var indicies = [0, 1, 2, 3, 4, 5, 6, 7];
         shuffle(indicies);
-        
+
         var shouldMakeMistake = randomBetween(0, 1);
         if (shouldMakeMistake == 1)
         {
@@ -243,16 +243,16 @@
             if (b[5] == 0) openSpaces.push(5);
             if (b[6] == 0) openSpaces.push(6);
             if (b[7] == 0) openSpaces.push(7);
-            
+
             if (!openSpaces.length)
                 return false;
-            
+
             var openSpaceIndex = randomBetween(0, openSpaces.length - 1);
             b.set(openSpaces[openSpaceIndex]);
-            
+
             return true;
         }
-        
+
         //For each substrategy
         substratergies = [ss1, ss2, ss3, ss4, ss5, ss6, ss7];
         for (var i = 0; i < substratergies.length; i++)
@@ -261,9 +261,9 @@
             for (var j = 0; j < 8; j++)
             {
                 b.applySymmetry(indicies[j]);
-                
+
                 var result = substratergies[i](b);
-                
+
                 //A result of -1 indicates that the substratergy has failed
                 if (result == -1)
                 {
@@ -279,10 +279,10 @@
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     /* Test for a row to either block or complete
         ø  _  _
         ø  _  _
@@ -294,7 +294,7 @@
             return 6;
         return -1;
     }
-    
+
     /* Test for a row to either block or complete
         ø  _  _
         #  _  _
@@ -306,7 +306,7 @@
             return 3;
         return -1;
     }
-    
+
     /* Test for a row to either block or complete
         ø  _  _
         _  ø  _
@@ -318,7 +318,7 @@
             return 8;
         return -1;
     }
-    
+
     /* Test for a row to either block or complete
        ø  _  _
        _  #  _
@@ -330,7 +330,7 @@
            return 4;
        return -1;
    }
-   
+
    /* Test for a row to either block or complete
        _  _  _
        ø  ø  _
@@ -340,13 +340,13 @@
    {
       if (b[3] != 0 && b[4] == 0 && b[5] == b[3])
           return 4;
-      
+
       if (b[3] != 0 && b[4] == b[3] && b[5] == 0)
           return 5;
-      
+
       return -1;
    }
-   
+
    /* Test for a row to either block or complete
       _  x  _
       _  #  _
@@ -360,7 +360,7 @@
            return 1;
        return -1;
    }
-   
+
    //Randomly play either the center, corners or an edge
    function ss7(b)
    {
@@ -369,7 +369,7 @@
        {
            return 4;
        }
-       
+
        var shouldPlayCorner = Math.random() < 0.66;
        if (shouldPlayCorner && (b[0] == 0 || b[2] == 0 || b[6] == 0 || b[8] == 0))
        {
@@ -382,14 +382,14 @@
                corners.push(6);
            if (b[8] == 0)
                corners.push(8);
-           
+
            return corners[randomBetween(0, corners.length - 1)];
        }
-       
+
        var edges = [];
        if (!(b[1] == 0 || b[3] == 0 || b[5] == 0 || b[7] == 0))
           return -1;
-       
+
        if (b[1] == 0)
            edges.push(1);
        if (b[3] == 0)
@@ -398,60 +398,60 @@
            edges.push(5);
        if (b[7] == 0)
            edges.push(7);
-       
+
        return edges[randomBetween(0, edges.length - 1)];
    }
-   
+
    //Generate a random integer in the interval [a, b]
    function randomBetween(a, b)
    {
        if (a == b)
         return a;
-       
+
        return a + Math.floor(Math.random()*(b+1));
    }
-   
+
    function calculateComputerTurn(b) {
-        
+
         //We want to consider b[0], b[1] and b[4]
         var corner = b[0];
         var edge = b[1];
         var center = b[4];
-        
+
         //Detect a win
         detectWin();
-        
+
         //WIN: If you have two in a row, play the third to get three in a row
         //BLOCK: If the opponent has two in a row, play the third to block them.
         //Translation: If you have two nonzero cells, and a zero cell, play the zero cell
-        
+
         for (j = 0; j < 4; j++)
         {
             if (testEither(b, [0, 1], [2]))
                 return true;
             if (testEither(b, [0, 2], [1]))
-                return true;      
+                return true;
             if (testEither(b, [0, 3], [6]))
-                return true;      
+                return true;
             if (testEither(b, [0, 6], [3]))
-                return true;      
+                return true;
             if (testEither(b, [0, 4], [8]))
-                return true;      
+                return true;
             if (testEither(b, [0, 8], [4]))
                 return true;
-            
+
             b.rotate();
         }
         //FORK: Create an opportunity where you can win in two ways.
-        
+
         //BLOCK FORK:
-        
+
         //CENTER: Play the center
         if (b[4] == 0) {
             b.set(4);
             return true;
         }
-        
+
         //EDGE: Play the side
         if (b[1] == 0) {
             b.set(1);
@@ -469,7 +469,7 @@
             b.set(7);
             return true;
         }
-        
+
         //CORNER: Play the corner
         if (b[0] == 0) {
             b.set(0);
@@ -487,21 +487,21 @@
             b.set(8);
             return true;
         }
-        
-        
+
+
         return false;
     }
-    
+
     function testOne(b, equals) {
         //Check that everything in equals is equal
         var a = b[equals[0]];
-        
+
         for (var i = 0; i < equals.length; i++)
         {
             if (b[equals[i]] != a || b[equals[i]] == 0)
                 return false;
         }
-        
+
         if (a == 2) {
             totalScore['computer'] += 1;
             inFinalState = true;
@@ -514,10 +514,10 @@
             resetscore();
             alertWithInfobox("You won :) <a href='javascript:resetgame()'>Play again.</a>", "green");
         }
-                
+
         return true;
     }
-    
+
     function testEither(b, nonzeros, zeros) {
         //Check that everything in nonzeros is nonzero
         for (var i = 0; i < nonzeros.length; i++)
@@ -525,43 +525,43 @@
             if (b[nonzeros[i]] == 0)
                 return false;
         }
-        
+
         //Check that everything in zeros is actually zero
         for (var i = 0; i < zeros.length; i++)
         {
             if (b[zeros[i]] != 0)
                 return false;
         }
-        
+
         //Play anything in zeros
         b.set(zeros[0]);
-        
+
         return true;
     }
-	
+
 	function completed() {
 		var h1title = document.getElementById('h1title');
 		var ptitle = document.getElementById('ptitle');
-		
+
 		h1title.innerHTML = 'Ready!';
 		ptitle.innerHTML = 'Ingredients has finished indexing your Cocoa docs.';
 		plast.innerHTML = '';
 	}
-        
+
     </script>
-	
+
 </head>
 
 <body>
-    
+
     <h1 id='h1title'>Hi there!</h1>
-    
+
     <p id='ptitle'>Ingredients is currently indexing your Cocoa docs. This will only take a couple of minutes.</p>
-    
+
     <p id='plast' class="last">How about a quick game of tic-tac-toe while you wait?</p>
-    
+
 	<div id="infobox" style="display: none;">This is some info text</div>
-	
+
     <div id="game">
         <div id="boardcontainer">
             <div id="board">
@@ -571,15 +571,15 @@
                         <td id="0" class="a" onClick="cc(this, 1)"></td>
                         <td id="1" class="b" onClick="cc(this, 2)"></td>
                         <td id="2" class="c" onClick="cc(this, 3)"></td>
-                    </tr>                          
-                                           
-                    <tr>                           
+                    </tr>
+
+                    <tr>
                         <td id="3" class="d" onClick="cc(this, 4)"></td>
                         <td id="4" class="e" onClick="cc(this, 5)"></td>
                         <td id="5" class="f" onClick="cc(this, 6)"></td>
-                    </tr>                          
-                                           
-                    <tr>                           
+                    </tr>
+
+                    <tr>
                         <td id="6" class="g" onClick="cc(this, 7)"></td>
                         <td id="7" class="h" onClick="cc(this, 8)"></td>
                         <td id="8" class="i" onClick="cc(this, 9)"></td>
@@ -590,14 +590,14 @@
         </div>
         <div id="score">
             <h2>Score</h2>
-            
+
             <table>
                 <tr>
                     <th>You</th>
                     <th>Computer</th>
                     <th>Draws</th>
                 </tr>
-                
+
                 <tr>
                     <td id='score_you'>0</td>
                     <td id='score_computer'>0</td>
@@ -607,6 +607,6 @@
         </div>
         <div id="logger" style="clear:both;"></div>
 </div>
-    
+
 </body>
 </html>

@@ -8,11 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BWStyledTextFieldCell : NSTextFieldCell 
+@interface BWStyledTextFieldCell : NSTextFieldCell
 {
 	BOOL shadowIsBelow, hasShadow, hasGradient;
 	NSColor *shadowColor, *startingColor, *endingColor, *solidColor;
-	
+
 	NSShadow *shadow;
 	NSMutableDictionary *previousAttributes;
 }

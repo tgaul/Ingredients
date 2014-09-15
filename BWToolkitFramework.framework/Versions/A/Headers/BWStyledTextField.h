@@ -10,7 +10,7 @@
 
 @interface BWStyledTextField : NSTextField
 {
-	
+
 }
 
 - (BOOL)hasGradient;

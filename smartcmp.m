@@ -16,9 +16,9 @@ SmartCmpScore compare_lengthScore(NSString *query, unichar *queryCharacters, NSU
 {
     SmartCmpScore deltaA = fabs(((double)aLength) - (double)queryLength);
     SmartCmpScore deltaB = fabs(((double)bLength) - (double)queryLength);
-    
+
     double maximumDelta = MAX(deltaA, deltaB);
-    
+
     if (maximumDelta == 0)
         return 0.0;
     else
@@ -36,15 +36,15 @@ int levenshtein(const void *s1, size_t l1,
 	size_t len = (l1 + 1) * (l2 + 1);
 	char *p1, *p2;
 	unsigned int d1, d2, d3, *d, *dp, res;
-	
+
 	if (l1 == 0) {
 		return l2;
 	} else if (l2 == 0) {
 		return l1;
 	}
-	
+
 	d = (unsigned int*)malloc(len * sizeof(unsigned int));
-	
+
 	*d = 0;
 	for(i = 1, dp = d + l2 + 1;
 		i < l1 + 1;
@@ -56,7 +56,7 @@ int levenshtein(const void *s1, size_t l1,
 		++j, ++dp) {
 		*dp = (unsigned) j;
 	}
-	
+
 	for(i = 1, p1 = (char*) s1, dp = d + l2 + 2;
 		i < l1 + 1;
 		++i, p1 += nmemb, ++dp) {
@@ -74,7 +74,7 @@ int levenshtein(const void *s1, size_t l1,
 		}
 	}
 	res = *(dp - 2);
-	
+
 	dp = NULL;
 	free(d);
 	return res;
@@ -86,7 +86,7 @@ SmartCmpScore distanceScore(unichar *queryCharacters, NSUInteger queryLength, un
 	int ldistance = levenshtein(queryCharacters, queryLength, resultCharacters, resultLength, 1, strcasecmp);
 	if (ldistance == 0)
 		return 1.0;
-	
+
 	return 1.0 - ((double)ldistance) / ((double)(maximumLength - queryLength));
 }
 
@@ -96,21 +96,21 @@ SmartCmpScore caseScore(NSString *query, unichar *queryCharacters, NSUInteger qu
     NSRange range = [result rangeOfString:query options:NSCaseInsensitiveSearch]; //TODO: Replace this with one done on the characters
 	if (range.length == 0 || range.location == NSNotFound)
         return 0.0;
-	
+
     NSUInteger i = 0;
     SmartCmpScore count = 0;
     for (i = 0; i < range.length; i++)
     {
         unichar qc = queryCharacters[i]; //Probably shouldn't do this unless everything is ASCII
 		unichar rc = resultCharacters[i + range.location];
-        
+
         if (qc == rc)
             count++;
     }
-	
+
 	SmartCmpScore wrongCharacters = ((SmartCmpScore)(range.length)) - ((SmartCmpScore)count);
 	//NSLog(@"\t %lf => %lf: '%@'", wrongCharacters, pow(2.0, -wrongCharacters), result);
-	
+
     return pow(2.0, -wrongCharacters);
 }
 
@@ -145,17 +145,17 @@ SmartCmpScore categoryScore(id resultObject)
 {
     SmartCmpScore score = 0.0;
     int categoryCount = 1;
-    
+
     //Priority
     if ([resultObject respondsToSelector:@selector(priorityval)])
 	{
 		SmartCmpScore maximumPriorityValue = (SmartCmpScore)(CHPriorityMaximum - 1);
 		score += (((SmartCmpScore)[resultObject priorityval]) / maximumPriorityValue);
 	}
-	
+
 	//Content length
 	//The hypothesis is that longer documentation articles are more important than shorter ones. More commonly used classes get expanded more and end up being longer
-	
+
 	//I'm commenting this out because, while it works in theory, we really need to get the maximum and minimum-nonzero content length and do a proper quotient to get good weighting
 	//This would solve the problem of constants, methods, etc having zero content lengths, which screws up their weighting
 	/*
@@ -166,10 +166,10 @@ SmartCmpScore categoryScore(id resultObject)
 		NSLog(@"content length score = %lf : '%@'", 1.0 - 1.0 / log(x + M_E), [resultObject valueForKey:@"name"]);
 	}
 	*/
-	
+
     //Docsets
     //TODO: Record most used docsets and score appropriately
-    
+
     return score / ((SmartCmpScore)categoryCount);
 }
 
@@ -185,7 +185,7 @@ SmartCmpScore smartcmpScore(NSString *query,  NSString *lowercaseQuery,  unichar
 	SmartCmpScore anchor_s = anchorScore(lowercaseQuery, lowercaseResult);
 	SmartCmpScore frecency_s = 0.0; //frecencyScore(...);
 	SmartCmpScore category_s = categoryScore(resultObject);
-	
+
     SmartCmpScore s = //length_s
 					+ distance_s
 					+ 0.75 * case_s
@@ -193,7 +193,7 @@ SmartCmpScore smartcmpScore(NSString *query,  NSString *lowercaseQuery,  unichar
 					+ frecency_s
 					+ 1.5 * category_s
 					;
-					
+
 	//NSLog(@"d %lf, c %lf, a %lf, f %lfm k %lf; t %lf; '%@'", distance_s, case_s, anchor_s, frecency_s, category_s, s, result);
 	return s;
 }
@@ -209,11 +209,10 @@ NSComparisonResult smartcmp(NSString *query,   NSString *lowercaseQuery,   unich
     SmartCmpScore bScore = smartcmpScore(query, lowercaseQuery, queryCharacters, queryLength,
 										 resultB, lowercaseResultB, resultACharacters, resultBLength, resultBObject,
 										 maximumLength);
-    
+
     if (aScore < bScore)
         return NSOrderedAscending;
     else if (aScore > bScore)
         return NSOrderedDescending;
     return NSOrderedSame;
 }
- 

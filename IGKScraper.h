@@ -19,16 +19,16 @@
 	NSURL *docsetURL;
 	NSURL *url;
 	NSManagedObjectContext *ctx;
-	
+
 	IGKLaunchController *launchController;
 	dispatch_queue_t dbQueue;
-	
+
 	NSUInteger pathsCount;
 	NSUInteger pathsCounter;
-	
+
 	NSMutableArray *paths;
 	NSManagedObject *scraperDocset;
-	
+
 	NSString *developerDirectory;
 }
 
@@ -45,18 +45,18 @@
 @interface IGKFullScraper : NSObject
 {
 	IGKDocRecordManagedObject *persistobj;
-	
+
 	IGKDocRecordManagedObject *transientObject;
 	NSManagedObjectContext *transientContext;
-	
+
 	//We use instance variables in IGKFullScraper as a way of maintaining state without passing arguments
 	NSManagedObject *docset;
 	NSXMLDocument *doc;
-	
+
 	NSArray *methodNodes;
-	
+
 	BOOL isParsingDeprecatedAppendix;
-	
+
 	//Some caching of entities
 	NSEntityDescription *ObjCMethodEntity;
 	NSEntityDescription *ObjCNotificationEntity;

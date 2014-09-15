@@ -15,7 +15,7 @@
 {
 	CAAnimation *animation = [super animationForKey:key];
 	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-	
+
 	return animation;
 }
 

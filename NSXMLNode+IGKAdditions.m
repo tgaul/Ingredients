@@ -13,11 +13,11 @@ void IGKPutChildrenMatchingPredicateIntoArray(NSXMLElement *element, BOOL (^pred
 {
 	if (![element isKindOfClass:[NSXMLElement class]])
 		return;
-	
+
 	//If the node matches the predicate, add it to the array
 	if (predicate(element))
 		[elements addObject:element];
-	
+
 	for (NSXMLNode *node in [element children])
 	{
 		//Recursively put any matching children of node into the nodes array
@@ -28,22 +28,22 @@ void IGKPutChildrenMatchingPredicateIntoArray(NSXMLElement *element, BOOL (^pred
 @implementation NSXMLNode (IGKAdditions)
 
 - (NSString *)commentlessStringValue
-{	
+{
 	if ([self kind] == NSXMLElementKind)
 	{
 		NSMutableString *str = [[NSMutableString alloc] init];
-		
+
 		[self innerCommentlessStringValueInto:str];
-		
+
 		return str;
 	}
-	
+
 	return [self stringValue];
 }
 - (void)innerCommentlessStringValueInto:(NSMutableString *)str
 {
 	NSXMLNodeKind kind = [self kind];
-	
+
 	if (kind == NSXMLTextKind)
 	{
 		[str appendString:[self stringValue]];
@@ -60,9 +60,9 @@ void IGKPutChildrenMatchingPredicateIntoArray(NSXMLElement *element, BOOL (^pred
 - (NSArray *)nodesMatchingPredicate:(BOOL (^)(NSXMLNode*))predicate
 {
 	NSMutableArray *nodes = [[NSMutableArray alloc] initWithCapacity:50];
-	
+
 	IGKPutChildrenMatchingPredicateIntoArray((NSXMLElement *)self, predicate, nodes);
-	
+
 	return nodes;
 }
 

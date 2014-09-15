@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BWHyperlinkButton : NSButton 
+@interface BWHyperlinkButton : NSButton
 {
 	NSString *urlString;
 }

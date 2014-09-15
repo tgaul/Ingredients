@@ -32,9 +32,9 @@
 {
 	//24 Uppercase Hexadecimal Characters
 	//For example: 758912EA10C2ABB500F9A5CF
-	
+
 	NSMutableString *uuidString = [[NSMutableString alloc] initWithCapacity:24];
-	
+
 	//We create 6 groups of 4 characters
 	int i;
 	for (i = 0; i < 6; i++)
@@ -43,7 +43,7 @@
 		r %= 65536; // 16^4
 		[uuidString appendString:[[NSString stringWithFormat:@"%04x", r] uppercaseString]];
 	}
-	
+
 	return uuidString;
 }
 
@@ -55,7 +55,7 @@
 	//NSLog(@"NSNotFound = %lu", NSNotFound);
 	//NSLog(@"r.location != NSNotFound = %@", r.location != NSNotFound);
 	BOOL contains = r.location != NSNotFound;
-	
+
 	/*if (contains != isLike)
 	{
 		NSLog(@"=== DIFFERENCE ===");
@@ -64,7 +64,7 @@
 		NSLog(@"\t contains = %d", contains);
 		NSLog(@"\t isLike = %d", isLike);
 	}*/
-	
+
 	return contains;
 }
 

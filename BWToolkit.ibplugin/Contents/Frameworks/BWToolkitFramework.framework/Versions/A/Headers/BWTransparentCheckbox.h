@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BWTransparentCheckbox : NSButton 
+@interface BWTransparentCheckbox : NSButton
 {
 
 }

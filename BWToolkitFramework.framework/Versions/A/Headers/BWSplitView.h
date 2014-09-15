@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BWSplitView : NSSplitView 
+@interface BWSplitView : NSSplitView
 {
 	NSColor *color;
 	BOOL colorIsEnabled, checkboxIsEnabled, dividerCanCollapse, collapsibleSubviewCollapsed;
@@ -18,7 +18,7 @@
 	NSArray *stateForLastPreferredCalculations;
 	int collapsiblePopupSelection;
 	float uncollapsedSize;
-	
+
 	// Collapse button
 	NSButton *toggleCollapseButton;
 	BOOL isAnimating;

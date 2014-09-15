@@ -13,14 +13,14 @@ p.last {
 
 body {
 	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-	
+
 	/*font-size: 120%;*/
 	color: #323232;
 }
 
 #infobox {
 	font-weight: bold;
-	
+
 	-webkit-border-radius: 3px;
 
 	color: white;
@@ -33,7 +33,7 @@ body {
 }
 #infobox.red {
 	border: 1px solid #b72225;
-	
+
 	background: -webkit-gradient(
     linear,
     left bottom,
@@ -44,7 +44,7 @@ body {
 }
 #infobox.green {
 	border: 1px solid #25A610;
-	
+
 	background: -webkit-gradient(
     linear,
     left bottom,
@@ -55,7 +55,7 @@ body {
 }
 #infobox.blue {
 	border: 1px solid #005AAA;
-	
+
 	background: -webkit-gradient(
     linear,
     left bottom,
@@ -80,18 +80,18 @@ body {
 	background-color: rgba(0,0,0,0.6);
 }
 
-#board td {	
+#board td {
    color: white;
    text-align: center;
-	
+
 	display: block;
 	min-width: 55px;
 	height: 60px;
-	
+
 	font-size: 30px;
-	
+
 	float: right;
-	
+
 	font-family: "Helvetica Neue";
 	font-weight: bold;
 	text-shadow: rgba(0,0,0,0.3) 0 1px 0;
@@ -106,15 +106,15 @@ body {
 #boardcontainer {
 	width: 45%;
 	float: left;
-	
+
 }
 #board {
 	margin: 0 auto;
-	
+
 	padding: 20px;
 	border-left: 1px solid rgba(0,0,0,0.1);
 	border-top: 1px solid rgba(0,0,0,0.1);
-	
+
 	-webkit-border-radius: 10px;
 	background-color: #d7d7d7;
 	padding: 10px;
@@ -125,12 +125,12 @@ body {
 }
 
 #score table
-{	
+{
 	border-collapse: collapse;
-	
+
 	border: 1px solid #d8d8d8;
 	background-color: #f2f2f2;
-	
+
 	margin-bottom: 12px;
 }
 #score th
@@ -148,7 +148,7 @@ body {
 
 	background-color: #f9f9f9;
 	border-right: 1px solid #d8d8d8;
-	
+
 	padding: 0 12px 2px;
 }
 #score tr.first td

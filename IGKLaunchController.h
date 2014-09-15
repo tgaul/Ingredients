@@ -17,12 +17,12 @@
 {
 	IGKApplicationDelegate *appController;
 	dispatch_queue_t dbQueue;
-	
+
 	NSMutableArray *scrapers;
-	
+
 	NSInteger pathReportsExpected;
 	NSInteger pathReportsReceived;
-	
+
 	NSInteger pathsCounter;
 	NSInteger totalPathsCount;
 }

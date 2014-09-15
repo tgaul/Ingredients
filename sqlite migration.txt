@@ -26,7 +26,7 @@
 - (id)valueForKey:(id)key
 {
 	id value = [keyvalues objectForKey:key];
-	
+
 	if (value)
 		return value;
 	else
@@ -58,7 +58,7 @@
 	NSString *reverseKey = [IGKRecord reverseKeyForToMany:key];
 	if (!reverseKey)
 		return nil;
-	
+
 	NSString *query = [NSString stringWithFormat:@"SELECT id FROM %@ WHERE %@=%llu", tableName, reverseKey, ident];
 }
 
